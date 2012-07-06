@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<servlet>
+		<servlet-name>HelloWorldServlet</servlet-name>
+		<servlet-class>de.tum.in.dbpra.HelloWorldServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HelloWorldServlet</servlet-name>
+		<url-pattern>/helloworld</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>HelloWorldJSPServlet</servlet-name>
+		<servlet-class>de.tum.in.dbpra.HelloWorldJSPServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HelloWorldJSPServlet</servlet-name>
+		<url-pattern>/helloworldjsp</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CustomerServlet</servlet-name>
+		<servlet-class>de.tum.in.dbpra.CustomerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CustomerServlet</servlet-name>
+		<url-pattern>/customer</url-pattern>
+	</servlet-mapping>
+</web-app>
