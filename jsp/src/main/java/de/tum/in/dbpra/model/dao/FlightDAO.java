@@ -11,7 +11,7 @@ public class FlightDAO extends AbstractDAO{
 			throws FlightInsertException{
 		
 		String query = new StringBuilder()
-		.append("INSERT INTO FLIGHT(ARRIVAL_TIME, ARRIVAL_DATE,	DEPARTURE_TIME,	DEPARTURE_DATE)")
+		.append("INSERT INTO FLIGHT(ARRIVAL_TIME, ARRIVAL_DATE,	DEPARTURE_TIME,	DEPARTURE_DATE) ")
 		.append("VALUES(?, ?, ?, ?)")
 		.toString();
 		

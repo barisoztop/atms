@@ -8,7 +8,7 @@ public class FlightConsistsOfDAO extends AbstractDAO{
 	public void associateSegmentToFlight(int flightID, int flightNr) throws FlightSegAssocInsertException{
 		
 		String query = new StringBuilder()
-		.append("INSERT INTO FLIGHT_CONSISTS_OF(FLIGHTID, FLIGHTNR)")
+		.append("INSERT INTO FLIGHT_CONSISTS_OF(FLIGHTID, FLIGHTNR) ")
 		.append("VALUES(?, ?")
 		.toString();
 		
