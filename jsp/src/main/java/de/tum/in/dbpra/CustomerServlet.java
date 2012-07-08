@@ -33,5 +33,6 @@ public class CustomerServlet extends HttpServlet {
     	}
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/customerview.jsp");
 		dispatcher.forward(request, response);
+		System.out.println("test");
     }
 }
