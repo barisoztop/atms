@@ -8,6 +8,7 @@ import java.sql.Time;
 import java.util.List;
 
 import de.tum.in.dbpra.model.bean.FlightSegmentBean;
+import de.tum.in.dbpra.model.dao.RouteDAO.RoutePair;
 
 public class FlightSegmentDAO extends AbstractDAO{
 	public void createNewFlightSegment(Date arrivalDate, Date departureDate, Time arrivalTime, Time departureTime, 
@@ -32,9 +33,10 @@ public class FlightSegmentDAO extends AbstractDAO{
 		}
 	}
 	
-	/*public List<FlightSegmentBean> findSegsForPotentialFlight(List<RoutePair> routePairs){
-		
-	}*/
+	public List<FlightSegmentBean> findSegsForPotentialFlight(List<RoutePair> routePairs){
+		//TODO
+		return null;
+	}
 	
 	@SuppressWarnings("serial")
 	public class FlightSegmentInsertException extends Throwable{
