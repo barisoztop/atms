@@ -2,8 +2,6 @@ package de.tum.in.dbpra.model.dao;
 
 import java.util.List;
 
-import de.tum.in.dbpra.model.bean.RoutePairBean;
-
 public class RouteDAO {
 	
 	public int getRouteID(String apcodeSource, String apcodeDestination) {
@@ -13,9 +11,40 @@ public class RouteDAO {
 		
 	}
 	
-	public List<RoutePairBean> getRoutePairs(String apcodeSource, String apcodeDestination) {
+	public List<RoutePair> getRoutePairs(String apcodeSource, String apcodeDestination) {
 		return null;
 		
+	}
+	
+	public class RoutePair {
+		
+		private int firstRouteID;
+		private int secondRouteID;
+		/**
+		 * @return the firstRouteID
+		 */
+		public int getFirstRouteID() {
+			return firstRouteID;
+		}
+		/**
+		 * @param firstRouteID the firstRouteID to set
+		 */
+		public void setFirstRouteID(int firstRouteID) {
+			this.firstRouteID = firstRouteID;
+		}
+		/**
+		 * @return the secondRouteID
+		 */
+		public int getSecondRouteID() {
+			return secondRouteID;
+		}
+		/**
+		 * @param secondRouteID the secondRouteID to set
+		 */
+		public void setSecondRouteID(int secondRouteID) {
+			this.secondRouteID = secondRouteID;
+		}
+
 	}
 
 }
