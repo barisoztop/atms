@@ -36,7 +36,7 @@
 			<artifactId>DB2Driver</artifactId>
 			<version>9.7</version>
 			<scope>system</scope>
-			<systemPath>C:\Program Files\IBM\SQLLIB\java\db2jcc.jar</systemPath>
+			<systemPath>C:\Program Files (x86)\IBM\SQLLIB\java\db2jcc.jar</systemPath>
 		</dependency>
 	</dependencies>
 
