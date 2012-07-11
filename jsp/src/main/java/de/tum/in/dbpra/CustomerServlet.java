@@ -25,8 +25,8 @@ public class CustomerServlet extends HttpServlet {
     	try {
         	CustomerDAO dao = new CustomerDAO();
         	CustomerBean customer = new CustomerBean();
-        	customer.setId(Integer.parseInt(request.getParameter("custkey")));
-        	dao.getCustomerByID(customer);
+        	//customer.setId(Integer.parseInt(request.getParameter("custkey")));
+        	//dao.getCustomerByID(customer);
         	request.setAttribute("customer", customer);
     	} catch (Throwable e) {
     		request.setAttribute("error", true);
