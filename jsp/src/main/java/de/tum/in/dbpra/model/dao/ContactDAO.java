@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import de.tum.in.dbpra.model.bean.ContactBean;
 
 
-public class ContactDao extends AbstractDAO{
+public class ContactDAO extends AbstractDAO{
 	
 	
 	public void createNewContact(ContactBean c) throws ContactInsertException{
