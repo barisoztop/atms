@@ -62,15 +62,15 @@ public class FlightDAO extends AbstractDAO{
 		.append("WHERE ")
 		.toString();
 		
-		query.concat("SOURCE_CITY = ");
-		query.concat(f.getSourceCity()+" ");
-		query.concat("DESTINATION_CITY = ");
-		query.concat(f.getDestinationCity()+" ");
-		query.concat("DEPARTURE_DATE = ");
+		query.concat("SOURCE_CITY = '");
+		query.concat(f.getSourceCity()+"' ");
+		query.concat("DESTINATION_CITY = '");
+		query.concat(f.getDestinationCity()+"' ");
+		query.concat("DEPARTURE_DATE = '");
 		//Maybe date.toString() has different format with the database
-		query.concat(f.getDepartureDate().toString()+" ");
-		query.concat("ARRIVAL_DATE = ");
-		query.concat(f.getArrivalDate().toString()+" ");
+		query.concat(f.getDepartureDate().toString()+"' ");
+		query.concat("ARRIVAL_DATE = '");
+		query.concat(f.getArrivalDate().toString()+"' ");
 		
 		List<FlightBean> flightList = new LinkedList<FlightBean>();
 		
@@ -102,6 +102,48 @@ public class FlightDAO extends AbstractDAO{
 		return flightList;
 	}
 	
+	public FlightBean getFlightDetail(FlightBean f) 
+			throws FlightNotFoundException{
+		
+		String query = new StringBuilder()
+		.append("SELECT FLIGHTID,SOURCE_CITY,DESTINATION_CITY,ARRIVAL_TIME,ARRIVAL_DATE,DEPARTURE_TIME,DEPARTURE_DATE ")
+		.append("FROM FLIGHT f ")
+		.append("WHERE ")
+		.toString();
+		
+		query.concat("FLIGHTID = ");
+		query.concat(f.getFlightID()+" ");
+		
+		
+		//List<FlightBean> flightList = new LinkedList<FlightBean>();
+		FlightBean flight;
+		
+		try (Connection connection = getConnection();
+				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+			
+			try (ResultSet resultSet = preparedStatement.executeQuery();) {
+					resultSet.next();
+					//flight = new FlightBean();
+					f.setFlightID(resultSet.getInt(1));
+					f.setSourceCity(resultSet.getString(2));
+					f.setDestinationCity(resultSet.getString(3));
+					f.setArrivalTime(resultSet.getTime(4));
+					f.setArrivalDate(resultSet.getDate(5));
+					f.setDepartureTime(resultSet.getTime(6));
+					f.setDepartureDate(resultSet.getDate(7));
+					
+					resultSet.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new FlightNotFoundException();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new FlightNotFoundException();
+		}
+		return f;
+	}
 	
 	@SuppressWarnings("serial")
 	public class FlightInsertException extends Throwable{

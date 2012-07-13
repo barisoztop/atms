@@ -1,6 +1,7 @@
 package de.tum.in.dbpra;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -9,8 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import de.tum.in.dbpra.model.bean.CustomerBean;
+import de.tum.in.dbpra.model.bean.FlightBean;
 import de.tum.in.dbpra.model.bean.TransactionBean;
 import de.tum.in.dbpra.model.dao.AirportDAO;
+import de.tum.in.dbpra.model.dao.CustomerDAO;
+import de.tum.in.dbpra.model.dao.FlightDAO;
 import de.tum.in.dbpra.model.dao.TransactionDAO;
 import de.tum.in.dbpra.model.bean.ContactBean;
 import de.tum.in.dbpra.model.dao.ContactDAO;
@@ -34,20 +39,41 @@ public class BookTicketServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
     	
-    	//add new customer
-    	
-    	//get the customerID
-    	//@@@mock-up customerID
-    	int customerID = 0;
     	
     	try {
+    		
+    		//add new customer
+        	String fName = request.getParameter("fname");
+        	String lName = request.getParameter("lname");
+        	String passportNO = request.getParameter("passportno");
+        	Date dob = Date.valueOf(request.getParameter("dob"));
+        	String sex = request.getParameter("sex");
+        	//get the customerID
+        	//@@@ check if the customer exist
+        	CustomerBean c = new CustomerBean();
+        	c.setFName(fName);
+        	c.setLName(lName);
+        	c.setPassportNO(passportNO);
+        	c.setDOB(dob);
+        	c.setSex(sex);
+        	CustomerDAO custDAO = new CustomerDAO();
+        	custDAO.createNewCustomer(c);
+        	//@@@mock-up customerID
+        	int customerID = 0;
+    		
+    		
+    		//create FlightDAO
+        	FlightDAO fDAO = new FlightDAO();
+        	FlightBean flightBean = new FlightBean();
+        	flightBean.setFlightID(Integer.parseInt((String) request.getSession().getAttribute("flightid")));
+        	fDAO.getFlightDetail(flightBean);
+    		
     		TransactionDAO trDAO = new TransactionDAO();
         	TransactionBean transaction = new TransactionBean();
         	//set transactionBean by using input from jsp
         	//AGENTID,FLIGHTID,T_TIMESTAMP,CURRENCY,T_STATUS,MODEOFPAYMENT,AMOUNT,TYPEOFTRANSACTION
-        	//@@@skip T_TIMESTAMP 
         	transaction.setAgentID(Integer.parseInt(request.getParameter("agentid")));
-        	transaction.setFlightID(Integer.parseInt((String) request.getSession().getAttribute("flightid")));
+        	transaction.setFlightID(flightBean.getFlightID());
         	transaction.setCurrency(request.getParameter("currency"));
         	transaction.sett_status(request.getParameter("t_status"));
         	transaction.setModeOfPayment(request.getParameter("modeofpayment"));
@@ -72,12 +98,18 @@ public class BookTicketServlet extends HttpServlet {
         	//set TicketBean by using input from jsp
         	//TICKETID,FLIGHTID,TOTALFARE,NOOFCHILDREN,DEPARTURETIME,DEPARTUREDATE,DEPARTUREAIRPORTCODE,CURRENCY,ARRIVALAIRPORTCODE,ARRIVALTIME,ARRIVALDATE,CUSTOMERID
         	//@@@ticketID need to be further implemented
-        	ticket.setFlightID(Integer.parseInt((String) request.getSession().getAttribute("flightid")));
-        	//@@@assume totalFare = amount
+        	ticket.setFlightID(flightBean.getFlightID());
+        	//assume totalFare = amount
         	ticket.setTotalFare(Double.parseDouble(request.getParameter("amount")));
         	ticket.setNoOfChildren(Integer.parseInt(request.getParameter("noofchildren")));
         	ticket.setCurrency(request.getParameter("currency"));
-        	//@@@the other attr. dep time/date/city arr time/date/city need to use FlightDAO to get it by using flightID
+        	ticket.setCustomerID(customerID);
+        	ticket.setArrivalAirportCode(flightBean.getDestinationCity());
+        	ticket.setArrivalDate(flightBean.getArrivalDate());
+        	ticket.setArrivalTime(flightBean.getArrivalTime());
+        	ticket.setDepartureAirportCode(flightBean.getSourceCity());
+        	ticket.setDepartureDate(flightBean.getDepartureDate());
+        	ticket.setDepartureTime(flightBean.getDepartureTime());
         	tkDAO.createNewTicket(ticket);
         	
         	
