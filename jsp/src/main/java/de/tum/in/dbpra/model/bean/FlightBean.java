@@ -1,7 +1,7 @@
 package de.tum.in.dbpra.model.bean;
 
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 
 public class FlightBean {
 	private int flightID;

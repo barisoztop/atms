@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 
 
@@ -20,13 +21,17 @@ public class TransactionDAO extends AbstractDAO{
 		.append("VALUES(?, ?, ?, ?, ?, ?, ?, ?)")
 		.toString();
 		
+		//set current time
+		java.util.Date today = new java.util.Date();
+	    Timestamp timeStamp = new java.sql.Timestamp(today.getTime());
+		
 		try (Connection connection = getConnection();
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);) {
 			
 			preparedStatement.setInt(1, t.getAgentID());
 			preparedStatement.setInt(2, t.getFlightID());
-			preparedStatement.setTimestamp(3, t.gett_timestamp());
+			preparedStatement.setTimestamp(3, timeStamp);
 			preparedStatement.setString(4, t.getCurrency());
 			preparedStatement.setString(5, t.gett_status());
 			preparedStatement.setString(6, t.getModeOfPayment());
