@@ -5,34 +5,55 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.util.LinkedList;
 import java.util.List;
 
 import de.tum.in.dbpra.model.bean.FlightSegmentBean;
+import de.tum.in.dbpra.model.dao.FlightDAO.FlightInsertException;
 import de.tum.in.dbpra.model.dao.RouteDAO.RoutePair;
 
 public class FlightSegmentDAO extends AbstractDAO{
-	public void createNewFlightSegment(Date arrivalDate, Date departureDate, Time arrivalTime, Time departureTime, 
+	
+	
+	public int  createNewFlightSegment(String arrivalDate, String departureDate, String arrivalTime, String departureTime, 
 			int routeID) throws FlightSegmentInsertException{
 		
+		int flightSegmentId = 0;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Statement stmt = null;
+	
 		String query = new StringBuilder()
 		.append("INSERT INTO FLIGHTSEGMENT(ARRIVAL_TIME, ARRIVAL_DATE,	DEPARTURE_TIME,	DEPARTURE_DATE, ROUTEID)")
-		.append("VALUES(?, ?, ?, ?, ?)")
+		.append("VALUES('"+arrivalTime+"','"+arrivalDate+"','"+departureTime+"','"+departureDate+"',"+routeID+")")
 		.toString();
 		
-		try (Connection connection = getConnection();
-				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-			preparedStatement.setTime(1, arrivalTime);
-			preparedStatement.setDate(2, arrivalDate);
-			preparedStatement.setTime(3, departureTime);
-			preparedStatement.setDate(4, departureDate);
-			preparedStatement.setInt(5, routeID);
-			preparedStatement.executeUpdate();
+		String query2 =  new StringBuilder()
+		.append("SELECT IDENTITY_VAL_LOCAL() FROM SYSIBM.SYSDUMMY1").toString();
+	
+		
+		try  {
+			    connection = getConnection();
+			    stmt = connection.createStatement();
+			    preparedStatement = connection.prepareStatement(query);
+	    	    preparedStatement.executeUpdate();
+	    	    ResultSet resultSet = stmt.executeQuery(query2);
+			    
+	    	    while (resultSet.next()) {
+				   flightSegmentId = Integer.parseInt(resultSet.getString(1));
+				
+			    }
+	    	
+	    	
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new FlightSegmentInsertException();
 		}
+	   return flightSegmentId;	
+		
+		
 	}
 	
 	public List<FlightSegmentBean> findSegsForPotentialFlight(List<RoutePair> routePairs) 
