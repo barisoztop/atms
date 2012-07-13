@@ -9,6 +9,8 @@ public class FlightBean {
 	private Date departureDate;
 	private Time arrivalTime;
 	private Time departureTime;
+	private String sourceCity;
+	private String destinationCity;
 	
 	public int getFlightID() {
 		return flightID;
@@ -39,5 +41,17 @@ public class FlightBean {
 	}
 	public void setDepartureTime(Time departureTime) {
 		this.departureTime = departureTime;
+	}
+	public String getSourceCity() {
+		return sourceCity;
+	}
+	public void setSourceCity(String sourceCity) {
+		this.sourceCity = sourceCity;
+	}
+	public String getDestinationCity() {
+		return destinationCity;
+	}
+	public void setDestinationCity(String destinationCity) {
+		this.destinationCity = destinationCity;
 	}
 }

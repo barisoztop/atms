@@ -11,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.tum.in.dbpra.model.bean.FlightSegmentBean;
-import de.tum.in.dbpra.model.dao.FlightDAO.FlightInsertException;
 import de.tum.in.dbpra.model.dao.RouteDAO.RoutePair;
 
 public class FlightSegmentDAO extends AbstractDAO{
@@ -83,7 +82,7 @@ public class FlightSegmentDAO extends AbstractDAO{
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
 				while (resultSet.next()) {
 					FlightSegmentBean flightSeg = new FlightSegmentBean();
-					flightSeg.setFilghtNr(resultSet.getInt(1));
+					flightSeg.setFlightNr(resultSet.getInt(1));
 					flightSeg.setArrivalTime(resultSet.getTime(2));
 					flightSeg.setArrivalDate(resultSet.getDate(3));
 					flightSeg.setDepartureTime(resultSet.getTime(4));
@@ -103,6 +102,48 @@ public class FlightSegmentDAO extends AbstractDAO{
 		}
 		return flightSegs;
 	}
+	
+	
+	public FlightSegmentBean searchSegmentByFlightNR(FlightSegmentBean f) 
+			throws FlightSegmentNotFoundException{
+		
+		String query = new StringBuilder()
+		.append("SELECT FLIGHTNR, ARRIVAL_TIME, ARRIVAL_DATE, DEPARTURE_TIME, DEPARTURE_DATE, ROUTEID ")
+		.append("FROM FLIGHTSEGMENT f ")
+		.append("WHERE ")
+		.toString();
+		
+		query.concat("FLIGHTNR = ");
+		query.concat(f.getFlightNr()+" ");
+		
+		//List<FlightSegmentBean> flightSegs = new LinkedList<FlightSegmentBean>();
+		FlightSegmentBean flightSeg;
+		
+		try (Connection connection = getConnection();
+				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+			
+			try (ResultSet resultSet = preparedStatement.executeQuery();) {
+					resultSet.next();
+					//flightSeg = new FlightSegmentBean();
+					f.setFlightNr(resultSet.getInt(1));
+					f.setArrivalTime(resultSet.getTime(2));
+					f.setArrivalDate(resultSet.getDate(3));
+					f.setDepartureTime(resultSet.getTime(4));
+					f.setDepartureDate(resultSet.getDate(5));
+					f.setRouteId(resultSet.getInt(6));
+					resultSet.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new FlightSegmentNotFoundException();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new FlightSegmentNotFoundException();
+		}
+		return f;
+	}
+	
 	
 	@SuppressWarnings("serial")
 	public class FlightSegmentInsertException extends Throwable{

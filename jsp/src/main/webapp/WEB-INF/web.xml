@@ -35,4 +35,20 @@
 		<servlet-name>FlightServlet</servlet-name>
 		<url-pattern>/flight</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>SearchFlightServlet</servlet-name>
+		<servlet-class>de.tum.in.dbpra.SearchFlightServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SearchFlightServlet</servlet-name>
+		<url-pattern>/searchflight</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>BookTicketServlet</servlet-name>
+		<servlet-class>de.tum.in.dbpra.BookTicketServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BookTicketServlet</servlet-name>
+		<url-pattern>/bookticket</url-pattern>
+	</servlet-mapping>
 </web-app>
