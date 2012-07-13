@@ -4,6 +4,7 @@ public class RoutePair {
 	
 	private int firstRouteID;
 	private int secondRouteID;
+	
 	/**
 	 * @return the firstRouteID
 	 */
@@ -28,5 +29,7 @@ public class RoutePair {
 	public void setSecondRouteID(int secondRouteID) {
 		this.secondRouteID = secondRouteID;
 	}
+	
+	
 
 }
