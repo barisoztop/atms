@@ -7,16 +7,20 @@ import java.sql.SQLException;
 public class FlightConsistsOfDAO extends AbstractDAO{
 	public void associateSegmentToFlight(int flightID, int flightNr) throws FlightSegAssocInsertException{
 		
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
 		String query = new StringBuilder()
 		.append("INSERT INTO FLIGHT_CONSISTS_OF(FLIGHTID, FLIGHTNR) ")
-		.append("VALUES(?, ?")
+		.append("VALUES("+flightID+","+flightNr+")")
 		.toString();
 		
-		try (Connection connection = getConnection();
-				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-			preparedStatement.setInt(1, flightID);
-			preparedStatement.setInt(2, flightNr);
+		try 
+		{
+			connection = getConnection();
+			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new FlightSegAssocInsertException();
