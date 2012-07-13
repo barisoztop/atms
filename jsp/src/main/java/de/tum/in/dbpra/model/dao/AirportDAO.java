@@ -2,14 +2,81 @@ package de.tum.in.dbpra.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import de.tum.in.dbpra.model.bean.AirportBean;
+
 
 public class AirportDAO extends AbstractDAO{
+	
+	
+	public ArrayList getAirportList() throws AirportNotFoundException {
+		
+		Connection connection = null;
+		Statement stmt = null;
+		
+		AirportBean airport;
+		ArrayList list = new ArrayList();
+		
+		String query = new StringBuilder()
+	        .append("SELECT APCODE, APNAME")
+			.append("  FROM airport ")
+			.toString();
+		
 
-	public List<String> getAirportNames() {
+		try{
+			connection = getConnection();
+			connection.setAutoCommit(false);
+			stmt = connection.createStatement();
+			ResultSet resultSet = stmt.executeQuery(query);
+
+				while (resultSet.next()) {
+			     		
+				 airport = new AirportBean();
+				 airport.setApcode(resultSet.getString(1));
+				 airport.setApname(resultSet.getString(2));
+				 list.add(airport);
+			}
+
+				resultSet.close();
+				connection.commit();
+		}catch(SQLException e ){
+			if (connection != null) {
+	            try {
+	                System.err.print("Transaction is being rolled back");
+	                connection.rollback();
+	            } catch(SQLException excep) {
+	            	System.err.print("SQL error occurs : "+excep.getMessage());
+	            }
+
+			}
+		} finally {
+			if(stmt != null){
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					System.err.print("SQL error occurs : "+e.getMessage());
+					e.printStackTrace();
+				}
+
+			}
+		}
+
+
+ return list;
+
+}	
+	
+
+	
+	// Useless methods - need to remove
+	
+	
+	
+		public List<String> getAirportNames() {
 
 		List<String> airportNames = new ArrayList<String>();
 		
@@ -76,5 +143,10 @@ public class AirportDAO extends AbstractDAO{
 		return apcode;
 	}
 
+	
+public static class AirportNotFoundException extends Throwable {
+   }
+
 
 }
+
