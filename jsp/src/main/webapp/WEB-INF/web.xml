@@ -27,4 +27,12 @@
 		<servlet-name>CustomerServlet</servlet-name>
 		<url-pattern>/customer</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>FlightServlet</servlet-name>
+		<servlet-class>de.tum.in.dbpra.FlightServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FlightServlet</servlet-name>
+		<url-pattern>/flight</url-pattern>
+	</servlet-mapping>
 </web-app>
