@@ -11,10 +11,10 @@ public class FlightSegmentBean {
 	private Time arrivalTime;
 	private Time departureTime;
 	
-	public int getFilghtNr() {
+	public int getFlightNr() {
 		return filghtNr;
 	}
-	public void setFilghtNr(int filghtNr) {
+	public void setFlightNr(int filghtNr) {
 		this.filghtNr = filghtNr;
 	}
 	public int getRouteId() {
