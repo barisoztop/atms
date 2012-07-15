@@ -42,7 +42,6 @@ public class BookTicketServlet extends HttpServlet {
         	Date dob = Date.valueOf(request.getParameter("dob"));
         	String sex = request.getParameter("sex");
         	//get the customerID
-        	//@@@ check if the customer exist
         	CustomerBean c = new CustomerBean();
         	c.setFName(fName);
         	c.setLName(lName);
@@ -97,7 +96,6 @@ public class BookTicketServlet extends HttpServlet {
         	TicketBean ticket = new TicketBean();
         	//set TicketBean by using input from jsp
         	//TICKETID,FLIGHTID,TOTALFARE,NOOFCHILDREN,DEPARTURETIME,DEPARTUREDATE,DEPARTUREAIRPORTCODE,CURRENCY,ARRIVALAIRPORTCODE,ARRIVALTIME,ARRIVALDATE,CUSTOMERID
-        	//@@@ticketID need to be further implemented
         	ticket.setFlightID(flightBean.getFlightID());
         	//assume totalFare = amount
         	//ticket.setTotalFare(Double.parseDouble(request.getParameter("amount")));

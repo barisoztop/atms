@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import de.tum.in.dbpra.model.bean.TicketBean;
+import main.java.de.tum.in.dbpra.model.bean.*;
+import main.java.de.tum.in.dbpra.model.dao.*;
 
 public class TicketDAO extends AbstractDAO{
 	
@@ -14,25 +14,28 @@ public class TicketDAO extends AbstractDAO{
 		
 		String query = new StringBuilder()
 		.append("INSERT INTO TICKET(TICKETID,FLIGHTID,TOTALFARE,NOOFCHILDREN,DEPARTURETIME,DEPARTUREDATE,DEPARTUREAIRPORTCODE,CURRENCY,ARRIVALAIRPORTCODE,ARRIVALTIME,ARRIVALDATE,CUSTOMERID)")
-		.append("VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+		.append("VALUES(case when (SELECT MAX(TICKETID) FROM TICKET)+1 is null then 1 else (SELECT MAX(TICKETID) FROM TICKET)+1 end, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 		.toString();
+		
+		//mock-up data
+	    t.setTotalFare(0.0);
 		
 		try (Connection connection = getConnection();
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);) {
 			
-			preparedStatement.setInt(1, t.getTicketID());
-			preparedStatement.setInt(2, t.getFlightID());
-			preparedStatement.setDouble(3, t.getTotalFare());
-			preparedStatement.setInt(4, t.getNoOfChildren());
-			preparedStatement.setTime(5, t.getDepartureTime());
-			preparedStatement.setDate(6, t.getDepartureDate());
-			preparedStatement.setString(7, t.getDepartureAirportCode());
-			preparedStatement.setString(8, t.getCurrency());
-			preparedStatement.setString(9, t.getArrivalAirportCode());
-			preparedStatement.setTime(10, t.getArrivalTime());
-			preparedStatement.setDate(11, t.getArrivalDate());
-			preparedStatement.setInt(12, t.getCustomerID());
+			//preparedStatement.setInt(1, t.getTicketID());
+			preparedStatement.setInt(1, t.getFlightID());
+			preparedStatement.setDouble(2, t.getTotalFare());
+			preparedStatement.setInt(3, t.getNoOfChildren());
+			preparedStatement.setTime(4, t.getDepartureTime());
+			preparedStatement.setDate(5, t.getDepartureDate());
+			preparedStatement.setString(6, t.getDepartureAirportCode());
+			preparedStatement.setString(7, t.getCurrency());
+			preparedStatement.setString(8, t.getArrivalAirportCode());
+			preparedStatement.setTime(9, t.getArrivalTime());
+			preparedStatement.setDate(10, t.getArrivalDate());
+			preparedStatement.setInt(11, t.getCustomerID());
 			
 			preparedStatement.executeUpdate();
 			
