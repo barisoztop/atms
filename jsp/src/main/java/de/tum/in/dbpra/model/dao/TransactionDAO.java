@@ -7,8 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 
-import main.java.de.tum.in.dbpra.model.bean.*;
-import main.java.de.tum.in.dbpra.model.dao.*;
+import de.tum.in.dbpra.model.bean.*;
 
 
 public class TransactionDAO extends AbstractDAO{

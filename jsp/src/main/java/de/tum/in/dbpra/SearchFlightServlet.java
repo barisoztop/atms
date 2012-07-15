@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.de.tum.in.dbpra.model.bean.*;
-import main.java.de.tum.in.dbpra.model.dao.*;
+import de.tum.in.dbpra.model.bean.*;
+import de.tum.in.dbpra.model.dao.*;
 
 
 
@@ -34,7 +34,7 @@ public class SearchFlightServlet extends HttpServlet {
 
     	}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/home1/bookTicket.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/bookTicket.jsp");
 		dispatcher.forward(request, response);
     }
     
@@ -92,7 +92,7 @@ public class SearchFlightServlet extends HttpServlet {
     	}
     	
     	
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/home1/DisplayRoutes.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/DisplayRoutes.jsp");
 		dispatcher.forward(request, response);
     }
 }

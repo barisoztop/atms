@@ -10,10 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.de.tum.in.dbpra.model.bean.*;
-import main.java.de.tum.in.dbpra.model.dao.CustomerDAO;
-import main.java.de.tum.in.dbpra.model.bean.*;
-import main.java.de.tum.in.dbpra.model.dao.*;
+import de.tum.in.dbpra.model.bean.*;
+import de.tum.in.dbpra.model.dao.CustomerDAO;
+import de.tum.in.dbpra.model.dao.*;
 
 
 
@@ -25,7 +24,7 @@ public class BookTicketServlet extends HttpServlet {
 
 		request.getSession().setAttribute("flightid", request.getParameter("flightid"));
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/home1/CustomerData.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/CustomerData.jsp");
 		dispatcher.forward(request, response);
     }
     
@@ -120,7 +119,7 @@ public class BookTicketServlet extends HttpServlet {
     	
     	//commit all three transactions here if there is no error
     	
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/home1/bookResult.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/bookResult.jsp");
 		dispatcher.forward(request, response);
     }
 }
