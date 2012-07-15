@@ -108,13 +108,13 @@ public class FlightSegmentDAO extends AbstractDAO{
 			throws FlightSegmentNotFoundException{
 		
 		String query = new StringBuilder()
-		.append("SELECT FLIGHTNR, ARRIVAL_TIME, ARRIVAL_DATE, DEPARTURE_TIME, DEPARTURE_DATE, ROUTEID ")
+		.append("SELECT FLIGHTNR, ARRIVAL_TIME, ARRIVAL_DATE, DEPARTURE_TIME, DEPARTURE_DATE, ROUTEID,SOURCE_CITY,DESTINATION_CITY ")
 		.append("FROM FLIGHTSEGMENT f ")
 		.append("WHERE ")
 		.toString();
 		
-		query.concat("FLIGHTNR = '");
-		query.concat(f.getFlightNr()+"' ");
+		query=query.concat("FLIGHTNR = '");
+		query=query.concat(f.getFlightNr()+"' ");
 		
 		//List<FlightSegmentBean> flightSegs = new LinkedList<FlightSegmentBean>();
 		FlightSegmentBean flightSeg;
@@ -131,6 +131,8 @@ public class FlightSegmentDAO extends AbstractDAO{
 					f.setDepartureTime(resultSet.getTime(4));
 					f.setDepartureDate(resultSet.getDate(5));
 					f.setRouteId(resultSet.getInt(6));
+					f.setSourceCity(resultSet.getString(7));
+					f.setDestinationCity(resultSet.getString(8));
 					resultSet.close();
 			} catch (SQLException e) {
 				e.printStackTrace();

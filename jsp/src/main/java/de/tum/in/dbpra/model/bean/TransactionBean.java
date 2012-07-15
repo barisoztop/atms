@@ -12,6 +12,7 @@ private String t_status;
 private String modeOfPayment;
 private Double amount;
 private String typeOfTransaction;
+private int customerID;
 
 public int getAgentID() {
 	return agentID;
@@ -19,6 +20,14 @@ public int getAgentID() {
 public void setAgentID(int agentID) {
 	this.agentID = agentID;
 }
+
+public int getCustomerID() {
+	return customerID;
+}
+public void setCustomerID(int customerID) {
+	this.customerID = customerID;
+}
+
 
 public int getFlightID() {
 	return flightID;

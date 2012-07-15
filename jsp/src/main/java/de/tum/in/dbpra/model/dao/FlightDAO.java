@@ -62,15 +62,15 @@ public class FlightDAO extends AbstractDAO{
 		.append("WHERE ")
 		.toString();
 		
-		query.concat("SOURCE_CITY = '");
-		query.concat(f.getSourceCity()+"' ");
-		query.concat("DESTINATION_CITY = '");
-		query.concat(f.getDestinationCity()+"' ");
-		query.concat("DEPARTURE_DATE = '");
+		query=query.concat("SOURCE_CITY = '");
+		query=query.concat(f.getSourceCity()+"' and " );
+		query=query.concat("DESTINATION_CITY = '");
+		query=query.concat(f.getDestinationCity()+"'  and ");
+		query=query.concat("DEPARTURE_DATE = '");
 		//Maybe date.toString() has different format with the database
-		query.concat(f.getDepartureDate().toString()+"' ");
-		query.concat("ARRIVAL_DATE = '");
-		query.concat(f.getArrivalDate().toString()+"' ");
+		query=query.concat(f.getDepartureDate().toString()+"' ");
+		//query.concat("ARRIVAL_DATE = '");
+		//query.concat(f.getArrivalDate().toString()+"' ");
 		
 		List<FlightBean> flightList = new LinkedList<FlightBean>();
 		
@@ -111,8 +111,8 @@ public class FlightDAO extends AbstractDAO{
 		.append("WHERE ")
 		.toString();
 		
-		query.concat("FLIGHTID = ");
-		query.concat(f.getFlightID()+" ");
+		query = query.concat("FLIGHTID = ");
+		query = query.concat(f.getFlightID()+" ");
 		
 		
 		//List<FlightBean> flightList = new LinkedList<FlightBean>();

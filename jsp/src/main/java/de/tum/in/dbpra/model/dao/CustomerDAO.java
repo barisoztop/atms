@@ -6,90 +6,130 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import main.java.de.tum.in.dbpra.model.bean.*;
+import main.java.de.tum.in.dbpra.model.dao.ContactDAO.ContactNotFoundException;
 
-import de.tum.in.dbpra.model.bean.CustomerBean;
+public class CustomerDAO extends AbstractDAO {
 
-public class CustomerDAO extends AbstractDAO{
-	
+	public int createNewCustomer(CustomerBean c) throws CustomerInsertException {
 
-	public void createNewCustomer(CustomerBean c) throws CustomerInsertException{
-		
-		String query = new StringBuilder()
-		.append("INSERT INTO CUSTOMER(CUSTOMERID,FNAME,LNAME,ADDRESS,COUNTRY,PASSPORTNO,DOB,SEX)")
-		.append("VALUES(?, ?, ?, ?, ?, ?, ?, ?)")
-		.toString();
-		
-		try (Connection connection = getConnection();
-			
-			PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-			
-			preparedStatement.setInt(1, c.getCustomerID());
-			preparedStatement.setString(2, c.getFName());
-			preparedStatement.setString(3, c.getLName());
-			preparedStatement.setString(4, c.getAddress());
-			preparedStatement.setString(5, c.getCountry());
-			preparedStatement.setString(6, c.getPassportNO());
-			preparedStatement.setDate(7, c.getDOB());
-			preparedStatement.setString(8, c.getSex());
-			
-			preparedStatement.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new CustomerInsertException();
+		try {
+			// IF it already exists, we don't have to create a new one
+			return findCustomer(c);
+
+		} catch (CustomerNotFoundException ce) {
+			System.out.println("Create a new Customer");
+			String query = new StringBuilder()
+					.append("INSERT INTO CUSTOMER(CUSTOMERID,FNAME,LNAME,ADDRESS,COUNTRY,PASSPORTNO,DOB,SEX)")
+					.append("VALUES(case when (SELECT MAX(CUSTOMERID) FROM CUSTOMER)+1 is null then 1 else (SELECT MAX(CUSTOMERID) FROM CUSTOMER)+1 end, ?, ?, ?, ?, ?, ?, ?)")
+					.toString();
+
+			// System.out.println("CustomerDAO query : "+query);
+
+			// c.setAddress("test");
+			// c.setCountry("test");
+			// c.setPassportNO("test");
+
+			try (Connection connection = getConnection();
+
+					PreparedStatement preparedStatement = connection
+							.prepareStatement(query);) {
+
+				// preparedStatement.setInt(1, c.getCustomerID());
+				preparedStatement.setString(1, c.getFName());
+				preparedStatement.setString(2, c.getLName());
+				preparedStatement.setString(3, c.getAddress());
+				preparedStatement.setString(4, c.getCountry());
+				preparedStatement.setString(5, c.getPassportNO());
+				preparedStatement.setDate(6, c.getDOB());
+				preparedStatement.setString(7, c.getSex());
+
+				preparedStatement.executeUpdate();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new CustomerInsertException();
+			}
+
+			int myCustomerID;
+
+			String query2 = new StringBuilder().append("SELECT CUSTOMERID ")
+					.append("FROM CUSTOMER c ")
+					.append("WHERE FNAME = ? AND LNAME = ? AND DOB = ? ")
+					.toString();
+
+			// System.out.println("CustomerDAO query 2 : "+query2);
+
+			try (Connection connection = getConnection();
+
+					PreparedStatement preparedStatement2 = connection
+							.prepareStatement(query2);) {
+
+				// preparedStatement.setInt(1, c.getCustomerID());
+				preparedStatement2.setString(1, c.getFName());
+				preparedStatement2.setString(2, c.getLName());
+				preparedStatement2.setDate(3, c.getDOB());
+
+				try (ResultSet resultSet = preparedStatement2.executeQuery();) {
+					resultSet.next();
+					myCustomerID = resultSet.getInt(1);
+
+					resultSet.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw new CustomerInsertException();
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new CustomerInsertException();
+			}
+			return myCustomerID;
+
 		}
 	}
-	
-	
-	
-	
-	//require CustomerBean with FName and LName
-	public List<CustomerBean> findCustomerByFullName(CustomerBean c) 
-			throws CustomerNotFoundException{
-		
+
+	// require CustomerBean with FName and LName
+	public int findCustomer(CustomerBean c) throws CustomerNotFoundException {
+
 		String query = new StringBuilder()
-		.append("SELECT CUSTOMERID,FNAME,LNAME,ADDRESS,COUNTRY,PASSPORTNO,DOB,SEX ")
-		.append("FROM CUSTOMER c ")
-		.append("WHERE FNAME = ? AND LNAME = ? ")
-		.toString();
-		
-		List<CustomerBean> myCustomers = new LinkedList<CustomerBean>();
-		
+				.append("SELECT CUSTOMERID ")
+				.append("FROM CUSTOMER c ")
+				.append("WHERE FNAME = ? AND LNAME = ? AND DOB = ? ")
+				.toString();
+
+		// List<CustomerBean> myCustomers = new LinkedList<CustomerBean>();
+		int myCustomerID;
+
 		try (Connection connection = getConnection();
-				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-			
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(query);) {
+
 			preparedStatement.setString(1, c.getFName());
 			preparedStatement.setString(2, c.getLName());
-			
+			preparedStatement.setDate(3, c.getDOB());
+
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
-				while (resultSet.next()) {
-					CustomerBean customer = new CustomerBean();
-					customer.setCustomerID(resultSet.getInt(1));
-					customer.setFName(resultSet.getString(2));
-					customer.setLName(resultSet.getString(3));
-					customer.setAddress(resultSet.getString(4));
-					customer.setCountry(resultSet.getString(5));
-					customer.setPassportNO(resultSet.getString(6));
-					myCustomers.add(customer);
-				}
+				resultSet.next();
+				myCustomerID = resultSet.getInt(1);
 				resultSet.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 				throw new CustomerNotFoundException();
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new CustomerNotFoundException();
 		}
-		return myCustomers;
+		return myCustomerID;
 	}
-	
+
 	@SuppressWarnings("serial")
-	public class CustomerInsertException extends Throwable{
+	public class CustomerInsertException extends Throwable {
 	}
-	
+
 	@SuppressWarnings("serial")
-	public class CustomerNotFoundException extends Throwable{
+	public class CustomerNotFoundException extends Throwable {
 	}
 }
