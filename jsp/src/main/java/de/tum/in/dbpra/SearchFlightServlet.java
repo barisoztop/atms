@@ -12,18 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.tum.in.dbpra.model.bean.FlightBean;
-import de.tum.in.dbpra.model.bean.FlightSegmentBean;
-import de.tum.in.dbpra.model.bean.TransactionBean;
-import de.tum.in.dbpra.model.dao.AirportDAO;
-import de.tum.in.dbpra.model.dao.FlightConsistsOfDAO;
-import de.tum.in.dbpra.model.dao.FlightDAO;
-import de.tum.in.dbpra.model.dao.FlightSegmentDAO;
-import de.tum.in.dbpra.model.dao.TransactionDAO;
-import de.tum.in.dbpra.model.bean.ContactBean;
-import de.tum.in.dbpra.model.dao.ContactDAO;
-import de.tum.in.dbpra.model.bean.TicketBean;
-import de.tum.in.dbpra.model.dao.TicketDAO;
+import main.java.de.tum.in.dbpra.model.bean.*;
+import main.java.de.tum.in.dbpra.model.dao.*;
 
 
 
@@ -44,7 +34,7 @@ public class SearchFlightServlet extends HttpServlet {
 
     	}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/page1.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/home1/bookTicket.jsp");
 		dispatcher.forward(request, response);
     }
     
@@ -57,14 +47,14 @@ public class SearchFlightServlet extends HttpServlet {
 			String sourceCity = request.getParameter("sourcecity");
 			String destinationCity = request.getParameter("destinationcity");
     		Date departureDate = Date.valueOf(request.getParameter("departuredate"));
-    		Date arrivalDate = Date.valueOf(request.getParameter("arrivaldate"));
+    		//Date arrivalDate = Date.valueOf(request.getParameter("arrivaldate"));
 			
     		//create flightBean
     		FlightBean flightBean = new FlightBean();
     		flightBean.setSourceCity(sourceCity);
     		flightBean.setDestinationCity(destinationCity);
     		flightBean.setDepartureDate(departureDate);
-    		flightBean.setArrivalDate(arrivalDate);
+    		//flightBean.setArrivalDate(arrivalDate);
     		//FlightDao - searchFlight
     		FlightDAO flightDAO = new FlightDAO();
     		List<FlightBean> flightList = flightDAO.searchFlight(flightBean);
@@ -75,8 +65,9 @@ public class SearchFlightServlet extends HttpServlet {
     		FlightSegmentDAO fsDAO = new FlightSegmentDAO();
     		//create flightMap to store (FlightBean,List<FlightSegment>)
     		HashMap<FlightBean,List<FlightSegmentBean>> flightMap = new HashMap<FlightBean,List<FlightSegmentBean>>();
-    		
+   
     		//put flightSegment related to each flight to flightMap
+    		
     		for(FlightBean flight : flightList){
     			//get the list of related flightSegment (only flightNr)
     			List<FlightSegmentBean> segmentList = fcoDAO.getListOfSegment(flight.getFlightID());
@@ -85,17 +76,23 @@ public class SearchFlightServlet extends HttpServlet {
     				fsDAO.searchSegmentByFlightNR(segment);
     			}
     			flightMap.put(flight, segmentList);
+    			
     		}
     		
     		request.setAttribute("flightmap", flightMap);
+    	
+    	
         	
     	} catch (Throwable e) {
+    		
+    		e.printStackTrace();
     		request.setAttribute("error", true);
+    		System.out.println("Error---------------------+"+e.getLocalizedMessage()+"+-----------");
 
     	}
     	
     	
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/page2.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/home1/DisplayRoutes.jsp");
 		dispatcher.forward(request, response);
     }
 }
