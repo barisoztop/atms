@@ -70,7 +70,7 @@ public class FlightDAO extends AbstractDAO{
 		//query.concat("ARRIVAL_DATE = '");
 		//query.concat(f.getArrivalDate().toString()+"' ");
 		
-		System.out.println(query);
+		//System.out.println(query);
 		List<FlightBean> flightList = new LinkedList<FlightBean>();
 		
 		try (Connection connection = getConnection();
@@ -87,7 +87,7 @@ public class FlightDAO extends AbstractDAO{
 					flight.setDepartureTime(resultSet.getTime(6));
 					flight.setDepartureDate(resultSet.getDate(7));
 					flightList.add(flight);
-					System.out.println(flight.getFlightID());
+					//System.out.println(flight.getFlightID());
 				}
 				resultSet.close();
 			} catch (SQLException e) {
@@ -111,8 +111,8 @@ public class FlightDAO extends AbstractDAO{
 		.append("WHERE ")
 		.toString();
 		
-		query.concat("FLIGHTID = ");
-		query.concat(f.getFlightID()+" ");
+		query = query.concat("FLIGHTID = ");
+		query = query.concat(f.getFlightID()+" ");
 		
 		
 		//List<FlightBean> flightList = new LinkedList<FlightBean>();

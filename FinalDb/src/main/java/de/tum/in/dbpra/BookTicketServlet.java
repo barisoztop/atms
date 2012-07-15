@@ -42,7 +42,6 @@ public class BookTicketServlet extends HttpServlet {
         	Date dob = Date.valueOf(request.getParameter("dob"));
         	String sex = request.getParameter("sex");
         	//get the customerID
-        	//@@@ check if the customer exist
         	CustomerBean c = new CustomerBean();
         	c.setFName(fName);
         	c.setLName(lName);
@@ -50,9 +49,12 @@ public class BookTicketServlet extends HttpServlet {
         	c.setDOB(dob);
         	c.setSex(sex);
         	CustomerDAO custDAO = new CustomerDAO();
-        	custDAO.createNewCustomer(c);
-        	//@@@mock-up customerID
-        	int customerID = 0;
+        	
+        	//create new customer and get the customer id
+        	int customerID = custDAO.createNewCustomer(c);
+        	System.out.println("customerID = "+customerID);
+        	//agentID
+        	int agentID = 1;
     		
     		
     		//create FlightDAO
@@ -60,41 +62,44 @@ public class BookTicketServlet extends HttpServlet {
         	FlightBean flightBean = new FlightBean();
         	flightBean.setFlightID(Integer.parseInt((String) request.getSession().getAttribute("flightid")));
         	fDAO.getFlightDetail(flightBean);
-    		
+        	System.out.println("FLIGHTDAO is Successful");
+        	
     		TransactionDAO trDAO = new TransactionDAO();
         	TransactionBean transaction = new TransactionBean();
         	//set transactionBean by using input from jsp
         	//AGENTID,FLIGHTID,T_TIMESTAMP,CURRENCY,T_STATUS,MODEOFPAYMENT,AMOUNT,TYPEOFTRANSACTION
-        	transaction.setAgentID(Integer.parseInt(request.getParameter("agentid")));
+        	transaction.setAgentID(agentID);
         	transaction.setFlightID(flightBean.getFlightID());
         	transaction.setCurrency(request.getParameter("currency"));
         	transaction.sett_status(request.getParameter("t_status"));
         	transaction.setModeOfPayment(request.getParameter("modeofpayment"));
-        	transaction.setAmount(Double.parseDouble(request.getParameter("amount")));
+        	//transaction.setAmount(Double.parseDouble(request.getParameter("amount")));
         	transaction.setTypeOfTransaction(request.getParameter("typeoftransaction"));
+        	transaction.setCustomerID(customerID);
         	trDAO.createNewTransaction(transaction);
+        	System.out.println("TRDAO is Successful");
         	
         	ContactDAO cDAO = new ContactDAO();
         	ContactBean contact = new ContactBean();
         	//set ContactBean by using input from jsp
         	//CUSTOMERID,AGENTID,CURRENCY,STATUS,MODEOFPAYMENT,AMOUNT
         	contact.setCustomerID(customerID);
-        	contact.setAgentID(Integer.parseInt(request.getParameter("agentid")));
+        	contact.setAgentID(agentID);
         	contact.setCurrency(request.getParameter("currency"));
         	contact.setStatus(request.getParameter("status"));
         	contact.setModeOfPayment(request.getParameter("modeofpayment"));
-        	contact.setAmount(Double.parseDouble(request.getParameter("amount")));
+        	//contact.setAmount(Double.parseDouble(request.getParameter("amount")));
         	cDAO.createNewContact(contact);
+        	System.out.println("CDAO is Successful");
         	
         	TicketDAO tkDAO = new TicketDAO();
         	TicketBean ticket = new TicketBean();
         	//set TicketBean by using input from jsp
         	//TICKETID,FLIGHTID,TOTALFARE,NOOFCHILDREN,DEPARTURETIME,DEPARTUREDATE,DEPARTUREAIRPORTCODE,CURRENCY,ARRIVALAIRPORTCODE,ARRIVALTIME,ARRIVALDATE,CUSTOMERID
-        	//@@@ticketID need to be further implemented
         	ticket.setFlightID(flightBean.getFlightID());
         	//assume totalFare = amount
-        	ticket.setTotalFare(Double.parseDouble(request.getParameter("amount")));
-        	ticket.setNoOfChildren(Integer.parseInt(request.getParameter("noofchildren")));
+        	//ticket.setTotalFare(Double.parseDouble(request.getParameter("amount")));
+        	//ticket.setNoOfChildren(Integer.parseInt(request.getParameter("noofchildren")));
         	ticket.setCurrency(request.getParameter("currency"));
         	ticket.setCustomerID(customerID);
         	ticket.setArrivalAirportCode(flightBean.getDestinationCity());
@@ -105,16 +110,17 @@ public class BookTicketServlet extends HttpServlet {
         	ticket.setDepartureTime(flightBean.getDepartureTime());
         	tkDAO.createNewTicket(ticket);
         	
-        	
+        	System.out.println("Transaction is Successful");
     	} catch (Throwable e) {
     		request.setAttribute("error", true);
     		//roll back all three transactions here
-    		
+    		e.printStackTrace();
+    		System.out.println("Transaction FAIL");
     	}
     	
     	//commit all three transactions here if there is no error
     	
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/page4.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/home1/bookResult.jsp");
 		dispatcher.forward(request, response);
     }
 }

@@ -22,40 +22,8 @@
 
 		<center>
 			<div id="content">
-				<h2>Customer Information</h2>
-				<div id="formdiv">
-
-					<form  method="post" action="/FinalDb/BookTicketServlet">
-						<%
-							ArrayList apList = (ArrayList) request.getAttribute("airportlist");
-						%>
-						<table>
-							<tr>
-								<td><label class="input_label"> Last Name</label></td>
-								<td><input type="text" name=lname></td>
-							</tr>
-							<tr>
-								<td><label class="input_label"> First Name</label></td>
-								<td><input type="text" name=fname></td>
-							</tr>
-							<tr>
-								<td><label class="input_label"> Dob</label></td>
-									<td><input type="text" name=dob></td>
-							</tr>
-							<tr>
-								<td><label class="input_label">Sex</label></td>
-									<td><input type="radio" name=sex value=m>Male</td>
-									<td><input type="radio" name=sex value=f>Female</td>
-							
-								
-							</tr>
-							
-						</table>
-						<br> <input type=submit name=checkFlights class="input_label"
-							value="Confirm Booking">
-					</form>
-
-				</div>
+				<h2>The flight has been booked.</h2>
+				
 			</div>
 		</center>
 

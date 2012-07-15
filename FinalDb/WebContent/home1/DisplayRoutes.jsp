@@ -30,7 +30,7 @@
 	<div id="content-container1">
 		<jsp:include page="public/LeftContent.jsp"></jsp:include>
 
-center>
+
 			<div id="content">
 				<h2>Book New Flight</h2>
 				<div id="formdiv">
@@ -57,15 +57,27 @@ center>
 		Map.Entry mapE = (Map.Entry)itr.next(); 
 		 flight =(FlightBean)mapE.getKey();
 		%>
-		
-		<tr><td><a href="/FinalDb/BookTicketServlet?flightid=<%=flight.getFlightID()%>" >Flight ID</a> </label></td>
+		<tr><td>=====================</br></td><td>=================================================================================</br></td></tr>
+		<tr><td><a href="/FinalDb/BookTicketServlet?flightid=<%=flight.getFlightID()%>" >Book this Flight</a> </label></td>
 		<%  List <FlightSegmentBean> flightSegs=(List)(mapE.getValue());  
 		
 		for(int ii=0;ii<flightSegs.size();ii++)
 		{
+			if(ii>0){
+				%>
+				<tr><td></td>
+				<%
+			}
 			flightSegment=flightSegs.get(ii);
-		%><td>flightNR:<label><%=flightSegment.getFlightNr() %>  </label></td>	
-		 <%
+		%><td>flightNR: <label><%=flightSegment.getFlightNr() %>  </label>&nbsp;departure: <label><%=flightSegment.getDepartureDate() %>   </label>&nbsp;<label><%=flightSegment.getDepartureTime() %>   </label>
+		&nbsp;-->&nbsp;arrival: <label><%=flightSegment.getArrivalDate() %>   </label>&nbsp;<label><%=flightSegment.getArrivalTime() %>   </label></td>	
+		
+		<%
+		 	if(ii>0){
+				%>
+				</tr>
+				<%
+			}
 		}
 		%>
 		</tr>
