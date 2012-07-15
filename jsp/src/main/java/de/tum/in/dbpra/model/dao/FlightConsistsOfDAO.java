@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.tum.in.dbpra.model.bean.FlightSegmentBean;
-import de.tum.in.dbpra.model.dao.FlightSegmentDAO.FlightSegmentNotFoundException;
 
 public class FlightConsistsOfDAO extends AbstractDAO{
 	public void associateSegmentToFlight(int flightID, int flightNr) throws FlightSegAssocInsertException{

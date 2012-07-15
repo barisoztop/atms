@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import main.java.de.tum.in.dbpra.model.bean.*;
+import de.tum.in.dbpra.model.bean.*;
 
 public class ContactDAO extends AbstractDAO {
 

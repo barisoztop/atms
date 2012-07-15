@@ -13,10 +13,12 @@
 </html>
 
 <div id="container">
-<jsp:include page="public/TopContent.jsp"></jsp:include>
+
+<jsp:include page="/public/TopContent.jsp"></jsp:include>
 
 <div id="content-container1">
-<jsp:include page="public/LeftContent.jsp"></jsp:include>
+
+<jsp:include page="/public/LeftContent.jsp"></jsp:include>
 
 
 
@@ -31,6 +33,8 @@
  </div>
 
 </div>
-<jsp:include page="public/BottomContent.jsp"></jsp:include>
+
+<jsp:include page="/public/BottomContent.jsp"></jsp:include>
+
 </div>
 </html>

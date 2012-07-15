@@ -4,10 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-import main.java.de.tum.in.dbpra.model.bean.*;
-import main.java.de.tum.in.dbpra.model.dao.ContactDAO.ContactNotFoundException;
+import de.tum.in.dbpra.model.bean.*;
 
 public class CustomerDAO extends AbstractDAO {
 

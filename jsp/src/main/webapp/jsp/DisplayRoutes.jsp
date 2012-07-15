@@ -1,9 +1,9 @@
-<%@page import="main.java.de.tum.in.dbpra.model.bean.FlightSegmentBean"%>
+<%@page import="de.tum.in.dbpra.model.bean.FlightSegmentBean"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Set"%>
-<%@page import="main.java.de.tum.in.dbpra.model.bean.FlightBean"%>
+<%@page import="de.tum.in.dbpra.model.bean.FlightBean"%>
 <%@page import="java.util.HashMap"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -14,9 +14,9 @@
 <script type="text/javascript"  src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" ></script>
 
 <jsp:useBean id="flight" scope="request"
-	class="main.java.de.tum.in.dbpra.model.bean.FlightBean" />
+	class="de.tum.in.dbpra.model.bean.FlightBean" />
 <jsp:useBean id="flightSegment" scope="request"
-	class="main.java.de.tum.in.dbpra.model.bean.FlightSegmentBean" />
+	class="de.tum.in.dbpra.model.bean.FlightSegmentBean" />
 
 <html>
 <head>
@@ -25,10 +25,12 @@
 <body>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <div id="container">
-	<jsp:include page="public/TopContent.jsp"></jsp:include>
+
+	<jsp:include page="/public/TopContent.jsp"></jsp:include>
 
 	<div id="content-container1">
-		<jsp:include page="public/LeftContent.jsp"></jsp:include>
+	
+		<jsp:include page="/public/LeftContent.jsp"></jsp:include>
 
 
 			<div id="content">
@@ -58,7 +60,7 @@
 		 flight =(FlightBean)mapE.getKey();
 		%>
 		<tr><td>=====================</br></td><td>=================================================================================</br></td></tr>
-		<tr><td><a href="/FinalDb/BookTicketServlet?flightid=<%=flight.getFlightID()%>" >Book this Flight</a> </label></td>
+		<tr><td><a href="/bookticket?flightid=<%=flight.getFlightID()%>" >Book this Flight</a> </label></td>
 		<%  List <FlightSegmentBean> flightSegs=(List)(mapE.getValue());  
 		
 		for(int ii=0;ii<flightSegs.size();ii++)
@@ -90,7 +92,7 @@
 	 else
 	 {
 		  %>
-		  <label>hello eroor </label>
+		  <label>hello error </label>
 		  <%
 	 }
  // Routes are Available . Prompt the user to select one route
