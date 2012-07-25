@@ -71,7 +71,6 @@ public class FlightServlet extends HttpServlet {
     	String arrivalAirport = "";
     	String successMessage = "";
     	
-    	ArrayList routeList = new ArrayList();
 		ArrayList airportList = new ArrayList() ;
     	
     	try {
@@ -129,13 +128,13 @@ public class FlightServlet extends HttpServlet {
     		    }
     	    }
     		
-    		routeList = rootDao.getRoutes(departureAirport, arrivalAirport);
+    		int routeid = rootDao.getRouteID(departureAirport, arrivalAirport);
     	    airportList = airportDAO.getAirportList();
 	        
     	    request.setAttribute("airport", airportbean);
      	    request.setAttribute("airportList", airportList);
      	    request.setAttribute("routePair", routePair);
-         	request.setAttribute("routeList", routeList);
+         	//request.setAttribute("routeList", routeList);
          	
          	System.out.println("Success message = "+successMessage);
     		

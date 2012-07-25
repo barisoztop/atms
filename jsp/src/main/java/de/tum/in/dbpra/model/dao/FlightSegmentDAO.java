@@ -72,7 +72,7 @@ public class FlightSegmentDAO extends AbstractDAO{
 	}
 	
 	/**
-	 * finds the segments(if they exist) that correspond for the route pairs
+	 * Finds the segments(if they exist) that corresponds to the route pairs. Right now only handles two route pairs.
 	 * @param routePairs the pairs containing the routes
 	 * @return a list of SegmentPairs which can be combined to create a flight satisfying routes needed
 	 * @throws FlightSegmentNotFoundException

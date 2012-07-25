@@ -1,25 +1,53 @@
 package de.tum.in.dbpra.model.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.tum.in.dbpra.model.bean.RoutePairBean;
-import de.tum.in.dbpra.model.dao.RouteDAO.RouteNotFoundException;
+import de.tum.in.dbpra.model.dao.FlightSegmentDAO.FlightSegmentNotFoundException;
 
 public class RouteDAO extends AbstractDAO {
 	
-	public int getRouteID(String apcodeSource, String apcodeDestination) {
+	public int getRouteID(String apcodeSource, String apcodeDestination) throws RouteNotFoundException {
+		String query = new StringBuilder()
+		.append("SELECT ROUTEID ")
+		.append("FROM ROUTE ")
+		.append("WHERE APCODE_SRC = ? AND APCODE_DST = ?")
+		.toString();
 		
+		int id = -1;
 		
-		return 0;
+		try (Connection connection = getConnection();
+				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+			
+			preparedStatement.setString(1, apcodeSource);
+			preparedStatement.setString(2, apcodeDestination);
+			
+			try (ResultSet resultSet = preparedStatement.executeQuery();) {
+				while (resultSet.next()) {
+					id = resultSet.getInt(1);
+				}
+				resultSet.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new RouteNotFoundException();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RouteNotFoundException();
+		}
 		
+		return id;
 	}
 	
+	@Deprecated
 	public ArrayList getRoutes (String apcodeSource, String apcodeDestination) throws RouteNotFoundException{
 		Connection connection = null;
 		Statement stmtforRoutePair = null;
@@ -94,41 +122,66 @@ public class RouteDAO extends AbstractDAO {
 		}
 
 
- return routeList;
+		return routeList;
 		
 	}
 	
-	
-	public List<RoutePair> getRoutePairs(String apcodeSource, String apcodeDestination) {
-		return null;
+	/**
+	 * finds pair(s) of routes which can be used(combined) to get from source airport to destination airport
+	 * 
+	 * @param apcodeSource airport code of the source
+	 * @param apcodeDestination airport code of the destination
+	 * @return List of route pairs
+	 * @throws RouteNotFoundException 
+	 */
+	public List<RoutePair> getRoutePairs(String apcodeSource, String apcodeDestination) throws RouteNotFoundException {
+		String query = new StringBuilder()
+		.append("SELECT r1.ROUTEID, r2.ROUTEID ")
+		.append("FROM ROUTE r1, ROUTE r2 ")
+		.append("WHERE r1.APCODE_SRC = ? AND r2.APCODE_DST = ? AND r1.APCODE_DST = r2.APCODE_SRC")
+		.toString();
 		
+		List<RoutePair> routePairs = new LinkedList<RoutePair>();
+		
+		try (Connection connection = getConnection();
+				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+			
+			preparedStatement.setString(1, apcodeSource);
+			preparedStatement.setString(2, apcodeDestination);
+			
+			try (ResultSet resultSet = preparedStatement.executeQuery();) {
+				while (resultSet.next()) {
+					RoutePair routePair = new RoutePair();
+					routePair.setFirstRouteID(resultSet.getInt(1));
+					routePair.setSecondRouteID(resultSet.getInt(2));
+					routePairs.add(routePair);
+				}
+				resultSet.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new RouteNotFoundException();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RouteNotFoundException();
+		}
+		return routePairs;
 	}
 	
 	public class RoutePair {
 		
 		private int firstRouteID;
 		private int secondRouteID;
-		/**
-		 * @return the firstRouteID
-		 */
 		public int getFirstRouteID() {
 			return firstRouteID;
 		}
-		/**
-		 * @param firstRouteID the firstRouteID to set
-		 */
 		public void setFirstRouteID(int firstRouteID) {
 			this.firstRouteID = firstRouteID;
 		}
-		/**
-		 * @return the secondRouteID
-		 */
 		public int getSecondRouteID() {
 			return secondRouteID;
 		}
-		/**
-		 * @param secondRouteID the secondRouteID to set
-		 */
 		public void setSecondRouteID(int secondRouteID) {
 			this.secondRouteID = secondRouteID;
 		}
