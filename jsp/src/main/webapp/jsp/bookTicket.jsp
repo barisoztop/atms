@@ -73,7 +73,7 @@
 								<td><label class="input_label"> Date of Travel</label></td>
 								<td width="30px"><input type="text" class="datepicker" name="departuredate"></td>
 							</tr>
-							</tr>
+							<tr></tr>
 							
 						</table>
 						<br> <input type=submit name=checkFlights class="input_label"
