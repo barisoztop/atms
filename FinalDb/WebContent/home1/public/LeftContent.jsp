@@ -1,6 +1,3 @@
-
-
-
 <div id="section-navigation">
 <p> Cool Features</p>
 				<ul>
