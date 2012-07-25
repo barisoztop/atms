@@ -3,8 +3,6 @@
 <%@page import="de.tum.in.dbpra.model.bean.AirportBean"%>
 <%@ page import="java.util.ArrayList"%>
 <%@page import="de.tum.in.dbpra.model.bean.RoutePairBean"%>
-<jsp:useBean id="routePair" scope="request"
-	class="de.tum.in.dbpra.model.bean.RoutePairBean" />
 <jsp:useBean id="airport" scope="request"
 	class="de.tum.in.dbpra.model.bean.AirportBean" />
 <!DOCTYPE html>
@@ -88,7 +86,7 @@
     	   airportList=(ArrayList)request.getAttribute("airportList");
    	   }   
     %>
-
+<body onload='retainPreviousData();'>
 <div id="container">
 
 	<jsp:include page="/public/TopContent.jsp"></jsp:include>
@@ -101,7 +99,8 @@
 
 	<div id="content">
 				<h2>Flight Creation</h2>
-				<div id="formdiv" onload='retainPreviousData();'>
+				
+				<div id="formdiv" >
 				<form action="/flight" method="post">
 					<table>
 
@@ -158,40 +157,22 @@
 
 					<table  border="1" >
 
-						<% 
-                   ArrayList list = new ArrayList();
-                   if(request.getAttribute("routeList")!= null){
-        	            list=(ArrayList)request.getAttribute("routeList");
-        	            if(list.size() == 0 ){%>
-						<b><i>Route is not available....</i></b>
-						<%} else {%>
-						<b> Flight Segments</b>
-						<%} %>
-
-
-						<%   for(int i=0 ; i< list.size(); i++){
-    	                          routePair = (RoutePairBean)list.get(i); %>
-						<tr>
-
-							<td width=2%><input TYPE=checkbox name=routes
-								VALUE="<%=routePair.getFirstRouteID()+"-"+routePair.getSecondRouteID()%>"></td>
-							<td width=10%><%=routePair.getFirstRouteID() %></td>
-							<td width=10%><%=routePair.getFirstSourceAirport()%></td>
-							<td width=10%><%=routePair.getFirstAirportDestination() %></td>
-
-							<% if(routePair.getSecondRouteID()==0) {
-             								} else {%>
-							<td width=1%><%=routePair.getSecondRouteID() %></td>
-							<td width=10%><%=routePair.getSecondSourceAirport() %></td>
-							<td width=10%><%=routePair.getSecondAirportDestination() %></td>
-							<% }%>
-
-							
-						</tr>
-
-
-						<% }
-                       }%>
+						<%
+						if(request.getAttribute("routeId") != null){
+                	    	int routeId = (Integer)request.getAttribute("routeId");
+        	            	if(routeId < 0){%>
+							<b><i>Route is not available....</i></b>
+							<%} else {%>
+							<b> Flight Segments</b>
+						
+							<tr>
+								<td width=2%><input TYPE=checkbox name=routes
+									VALUE="<%=routeId%>"></td>
+								<td width=10%><%=request.getAttribute("srcAirport")%></td>
+								<td width=10%><%=request.getAttribute("dstAirport") %></td>
+							</tr>
+                        	<%}%>
+                        <%}%>
 
 					</table>
 
