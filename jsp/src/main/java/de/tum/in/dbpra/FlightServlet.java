@@ -2,25 +2,23 @@
  * 
  */
 package de.tum.in.dbpra;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import de.tum.in.dbpra.model.bean.AirportBean;
+import de.tum.in.dbpra.model.bean.RoutePairBean;
 import de.tum.in.dbpra.model.dao.AirportDAO;
-import de.tum.in.dbpra.model.dao.RouteDAO;
+import de.tum.in.dbpra.model.dao.FlightConsistsOfDAO;
 import de.tum.in.dbpra.model.dao.FlightDAO;
 import de.tum.in.dbpra.model.dao.FlightSegmentDAO;
-import de.tum.in.dbpra.model.bean.RoutePairBean;
-import de.tum.in.dbpra.model.dao.FlightConsistsOfDAO;
-
-import java.io.IOException;
+import de.tum.in.dbpra.model.dao.RouteDAO;
+import de.tum.in.dbpra.model.dao.RouteDAO.RouteNotFoundException;
 
 /**
  * @author hafsa
@@ -56,10 +54,6 @@ public class FlightServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
     	
-    	
-    	int index = 0;
-    	int routeId1 = 0;
-    	int routeId2 = 0;
     	int flightId = 0;
     	int flightSegmentId = 0;
     	
@@ -109,32 +103,27 @@ public class FlightServlet extends HttpServlet {
     		
     		
     		for(String s: selectedRouteIds){
-    			
-    		    index = s.indexOf("-");
-    			routeId1 = Integer.parseInt(s.substring(0, index));
-    			routeId2 = Integer.parseInt(s.substring(index, s.length())) ;
-    	              
-    	               if(routeId1 != 0){
-    	            	   flightId = flightDAO.createNewFlight(arrivalDate, departureDate, arrivalTime, departureTime);
-    	            	   flightSegmentId = flightsegDAO.createNewFlightSegment(arrivalDate, departureDate, arrivalTime, departureTime, routeId1);
-    	            	   flightConsistsOf.associateSegmentToFlight(flightId, flightSegmentId);
-    	               } 
-    	               if(routeId2 != 0){
-    	            	   flightSegmentId =  flightsegDAO.createNewFlightSegment(arrivalDate, departureDate, arrivalTime, departureTime, routeId2);
-    	           	       flightConsistsOf.associateSegmentToFlight(flightId, flightSegmentId);
-    	               }
-    	            successMessage = "Flight created Successfully";
-    	    		
+            	   flightId = flightDAO.createNewFlight(arrivalDate, departureDate, arrivalTime, departureTime);
+            	   flightSegmentId = flightsegDAO.createNewFlightSegment(arrivalDate, departureDate, arrivalTime, departureTime, Integer.parseInt(s));
+            	   flightConsistsOf.associateSegmentToFlight(flightId, flightSegmentId);
+            	   successMessage = "Flight created Successfully";
     		    }
     	    }
     		
-    		int routeid = rootDao.getRouteID(departureAirport, arrivalAirport);
+    		int routeId = 0;
+    		try{
+    			routeId = rootDao.getRouteID(departureAirport, arrivalAirport);
+    		}catch(RouteNotFoundException e){
+    			routeId = -1;
+    		}
     	    airportList = airportDAO.getAirportList();
 	        
     	    request.setAttribute("airport", airportbean);
      	    request.setAttribute("airportList", airportList);
      	    request.setAttribute("routePair", routePair);
-         	//request.setAttribute("routeList", routeList);
+     	    request.setAttribute("srcAirport", departureAirport);
+     	    request.setAttribute("dstAirport", arrivalAirport);
+     	    request.setAttribute("routeId", routeId);
          	
          	System.out.println("Success message = "+successMessage);
     		
