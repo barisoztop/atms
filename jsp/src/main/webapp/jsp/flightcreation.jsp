@@ -17,9 +17,9 @@ A:hover {text-decoration: none;
     color: #2d2b2b; }
 </style>
     
-    <link rel="stylesheet" type="text/css" href="../datepicker.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/datepicker.css"/>
    
-    <script type="text/javascript" src="../datepicker.js"></script>
+    <script type="text/javascript" src="/jS/datepicker.js"></script>
    
     <script>
        function retainPreviousData(){
