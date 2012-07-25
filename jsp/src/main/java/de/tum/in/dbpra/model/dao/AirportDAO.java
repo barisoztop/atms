@@ -13,13 +13,13 @@ import de.tum.in.dbpra.model.bean.AirportBean;
 public class AirportDAO extends AbstractDAO{
 	
 	
-	public ArrayList getAirportList() throws AirportNotFoundException {
+	public ArrayList<AirportBean> getAirportList() throws AirportNotFoundException {
 		
 		Connection connection = null;
 		Statement stmt = null;
 		
 		AirportBean airport;
-		ArrayList list = new ArrayList();
+		ArrayList<AirportBean> list = new ArrayList<AirportBean>();
 		
 		String query = new StringBuilder()
 	        .append("SELECT APCODE, APNAME")

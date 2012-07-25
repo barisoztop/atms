@@ -36,7 +36,7 @@ public class FlightServlet extends HttpServlet {
 			  AirportBean airportbean = null;
 			  AirportDAO airportDAO = new AirportDAO();
 		      
-	          ArrayList airportList = new ArrayList() ;
+	          ArrayList<AirportBean> airportList = new ArrayList<AirportBean>() ;
  	        
 	          airportList = airportDAO.getAirportList();
  	          request.setAttribute("airport", airportbean);
