@@ -26,6 +26,7 @@ import java.io.IOException;
  * @author hafsa
  *
  */
+@SuppressWarnings("serial")
 public class FlightServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,

@@ -53,52 +53,81 @@ public class FlightSegmentDAO extends AbstractDAO{
 		
 	}
 	
-	public List<FlightSegmentBean> findSegsForPotentialFlight(List<RoutePair> routePairs) 
+	public class SegmentPair{
+		private FlightSegmentBean firstSegment;
+		private FlightSegmentBean secondSegmentNr;
+		
+		public FlightSegmentBean getFirstSegment() {
+			return firstSegment;
+		}
+		public void setFirstSegment(FlightSegmentBean firstSegment) {
+			this.firstSegment = firstSegment;
+		}
+		public FlightSegmentBean getSecondSegmentNr() {
+			return secondSegmentNr;
+		}
+		public void setSecondSegmentNr(FlightSegmentBean secondSegmentNr) {
+			this.secondSegmentNr = secondSegmentNr;
+		}
+	}
+	
+	/**
+	 * finds the segments(if they exist) that correspond for the route pairs
+	 * @param routePairs the pairs containing the routes
+	 * @return a list of SegmentPairs which can be combined to create a flight satisfying routes needed
+	 * @throws FlightSegmentNotFoundException
+	 */
+	public List<SegmentPair> findSegsForPotentialFlight(List<RoutePair> routePairs) 
 			throws FlightSegmentNotFoundException{
 		
-		String query = new StringBuilder()
-		.append("SELECT FLIGHTNR, ARRIVAL_TIME, ARRIVAL_DATE, DEPARTURE_TIME, DEPARTURE_DATE, ROUTEID ")
-		.append("FROM FLIGHTSEGMENT f1, FLIGHTSEGMENT f2 ")
-		.append("WHERE ")
-		.toString();
-		
+		List<SegmentPair> segPairs = new LinkedList<SegmentPair>();
 		for (RoutePair routePair : routePairs) {
-			query.concat("(");
-			query.concat("f1.ROUTEID = " + routePair.getFirstRouteID() + " AND " + 
-					"f2.ROUTEID = " + routePair.getSecondRouteID());
-			query.concat(") ");
-			if((routePairs.size() > 1) && (routePairs.indexOf(routePair) < (routePairs.size() - 1))){
-				query.concat(" OR ");
-			}
-		}
-		
-		List<FlightSegmentBean> flightSegs = new LinkedList<FlightSegmentBean>();
-		
-		try (Connection connection = getConnection();
-				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+			String query = new StringBuilder()
+			.append("SELECT f1.FLIGHTNR, f1.ARRIVAL_TIME, f1.ARRIVAL_DATE, f1.DEPARTURE_TIME, f1.DEPARTURE_DATE, f1.ROUTEID, f2.FLIGHTNR, f2.ARRIVAL_TIME, f2.ARRIVAL_DATE, f2.DEPARTURE_TIME, f2.DEPARTURE_DATE, f2.ROUTEID ")
+			.append("FROM FLIGHTSEGMENT f1, FLIGHTSEGMENT f2 ")
+			.append("WHERE f1.ROUTEID = ? AND f2.ROUTEID = ? AND f1.ARRIVAL_DATE <= f2.DEPARTURE_DATE AND f1.ARRIVAL_TIME < f2.DEPARTURE_TIME")
+			.toString();
 			
-			try (ResultSet resultSet = preparedStatement.executeQuery();) {
-				while (resultSet.next()) {
-					FlightSegmentBean flightSeg = new FlightSegmentBean();
-					flightSeg.setFlightNr(resultSet.getInt(1));
-					flightSeg.setArrivalTime(resultSet.getTime(2));
-					flightSeg.setArrivalDate(resultSet.getDate(3));
-					flightSeg.setDepartureTime(resultSet.getTime(4));
-					flightSeg.setDepartureDate(resultSet.getDate(5));
-					flightSeg.setRouteId(resultSet.getInt(6));
-					flightSegs.add(flightSeg);
+			try (Connection connection = getConnection();
+					 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+				
+				preparedStatement.setInt(1, routePair.getFirstRouteID());
+				preparedStatement.setInt(2, routePair.getSecondRouteID());
+				
+				try (ResultSet resultSet = preparedStatement.executeQuery();) {
+					while (resultSet.next()) {
+						FlightSegmentBean flightSeg1 = new FlightSegmentBean();
+						flightSeg1.setFlightNr(resultSet.getInt(1));
+						flightSeg1.setArrivalTime(resultSet.getTime(2));
+						flightSeg1.setArrivalDate(resultSet.getDate(3));
+						flightSeg1.setDepartureTime(resultSet.getTime(4));
+						flightSeg1.setDepartureDate(resultSet.getDate(5));
+						flightSeg1.setRouteId(resultSet.getInt(6));
+						FlightSegmentBean flightSeg2 = new FlightSegmentBean();
+						flightSeg2.setFlightNr(resultSet.getInt(7));
+						flightSeg2.setArrivalTime(resultSet.getTime(8));
+						flightSeg2.setArrivalDate(resultSet.getDate(9));
+						flightSeg2.setDepartureTime(resultSet.getTime(10));
+						flightSeg2.setDepartureDate(resultSet.getDate(11));
+						flightSeg2.setRouteId(resultSet.getInt(12));
+						SegmentPair segPair = new SegmentPair();
+						segPair.setFirstSegment(flightSeg1);
+						segPair.setSecondSegmentNr(flightSeg2);
+						segPairs.add(segPair);
+					}
+					resultSet.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw new FlightSegmentNotFoundException();
 				}
-				resultSet.close();
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 				throw new FlightSegmentNotFoundException();
 			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new FlightSegmentNotFoundException();
 		}
-		return flightSegs;
+		
+		return segPairs;
 	}
 	
 	
