@@ -132,6 +132,6 @@
 
 
 </div>
-<jsp:include page="public/BottomContent.jsp"></jsp:include>
+<jsp:include page="/public/BottomContent.jsp"></jsp:include>
 </div>
 </html>
