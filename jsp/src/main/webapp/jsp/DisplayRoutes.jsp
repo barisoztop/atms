@@ -34,93 +34,104 @@
 
 
 			<div id="content">
-				<h2>Book New Flight</h2>
+				<h2></h2>
 				<div id="formdiv">
 
-<% if(1>1){ // if no routes%>
-<p>
-   
-   No Flights Available in the selected route for the data= $date;
-   Please Select An Alternate Route
-   <a href="Javacript:history.back();" >Select Alternate Route</a>
-</p>
-<%}
- else
- {
-	 HashMap flights=(HashMap)request.getAttribute("flightmap");
-	 if(flights!=null){
-	
-		Set flightSet=flights.entrySet();
-		Iterator itr = flightSet.iterator(); 
-		// Display elements 
-		%><table><th>Flight</th><th>FLight Segments</th><%
-		while(itr.hasNext()) { 
-	   
-		Map.Entry mapE = (Map.Entry)itr.next(); 
-		 flight =(FlightBean)mapE.getKey();
-		%>
-		<tr><td>=====================</br></td><td>=================================================================================</br></td></tr>
-		<tr><td><a href="/bookticket?flightid=<%=flight.getFlightID()%>" >Book this Flight</a> </label></td>
-		<%  List <FlightSegmentBean> flightSegs=(List)(mapE.getValue());  
-		
-		for(int ii=0;ii<flightSegs.size();ii++)
-		{
-			if(ii>0){
-				%>
-				<tr><td></td>
-				<%
-			}
-			flightSegment=flightSegs.get(ii);
-		%><td>flightNR: <label><%=flightSegment.getFlightNr() %>  </label>&nbsp;departure: <label><%=flightSegment.getDepartureDate() %>   </label>&nbsp;<label><%=flightSegment.getDepartureTime() %>   </label>
-		&nbsp;-->&nbsp;arrival: <label><%=flightSegment.getArrivalDate() %>   </label>&nbsp;<label><%=flightSegment.getArrivalTime() %>   </label></td>	
-		
-		<%
-		 	if(ii>0){
-				%>
-				</tr>
-				<%
-			}
-		}
-		%>
-		</tr>
-		<%
-		}
-		%></table>
-		 <% 
-	 }
-	 
-	 else
-	 {
-		  %>
-		  <label>hello error </label>
-		  <%
-	 }
- // Routes are Available . Prompt the user to select one route
- // We should information like , flight number, price of the journey, complete details of the flight(time,airport)both dest and arrival
- // this will be populated in a table , and user can select anyone to check further details.
-%>
+					<%
+					HashMap flights = (HashMap) request.getAttribute("flightmap");
+					
+					if (flights.size()==0)
+					{ // if no routes
+					%>
+					<p>
+                        <center>
+						No Flights Available in the selected route for the date 
+                      <br>
+						<a href="#" onclick="history.go(-1)"> Change Flight Selection</a>
+						</center>
+					</p>
+					<%
+						} 
+					else 
+					{
+					   Set flightSet = flights.entrySet();
+					   Iterator itr = flightSet.iterator();
+								// Display elements
+					%><table>
+						<th>Flight</th>
+						<th>Flight Segments</th>
+						<%
+							while (itr.hasNext()) {
 
-<table>
-<thead>
-<th>
+										Map.Entry mapE = (Map.Entry) itr.next();
+										flight = (FlightBean) mapE.getKey();
+						%>
+						<tr>
+							<td>=====================</br></td>
+							<td>=================================================================================</br></td>
+						</tr>
+						<tr>
+							<td class="flight_namecoloumn"><a href="/bookticket?flightid=<%=flight.getFlightID()%>" >Book this Flight</a> </label></td>
+							<%
+								List<FlightSegmentBean> flightSegs = (List) (mapE
+													.getValue());
 
-</th>
-</thead>
-<tbody></tbody>
+											for (int ii = 0; ii < flightSegs.size(); ii++) {
+												if (ii > 0) {
+							%>
+							<tr>
+							<td></td>
+							<%
+								}
+												flightSegment = flightSegs.get(ii);
+							%>
+							<td class="flight_detailscoloumn">Flight Number <label><%=flightSegment.getFlightNr()%>
+							</label>&nbsp;Departure <label><%=flightSegment.getDepartureDate()%>
+							</label>&nbsp;<label><%=flightSegment.getDepartureTime()%> </label>
+								&nbsp;-->&nbsp;Arrival <label><%=flightSegment.getArrivalDate()%>
+							</label>&nbsp;<label><%=flightSegment.getArrivalTime()%> </label></td>
 
-</table>
- 
- 
-	<%
-	
- }
- 
- %>
- 
-<div><center>
-<a href="Javacript:history.back();">
- Change Flight Selection</a>
-</center>
+							<%
+								if (ii > 0) {
+							%>
+						</tr>
+						<%
+							}
+										}
+						%>
+						</tr>
+						<%
+							}
+						%>
+					</table>
+					<table>
+					<thead>
+					<th></th>
+					</thead>
+					<tbody></tbody>
+
+					</table>
+
+
+					
+
+					<div>
+						<center>
+							<a href="#" onclick="history.go(-1)"> Change Flight Selection</a>
+						</center>
+					</div>
+					<%
+						
+						}
+					%>
+
+					
+					</div>
+					</div>
+					
+
+
 </div>
-</body>
+<jsp:include page="public/BottomContent.jsp"></jsp:include>
+</div>
 </html>

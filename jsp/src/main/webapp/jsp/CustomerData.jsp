@@ -31,7 +31,7 @@
 						<%
 							ArrayList apList = (ArrayList) request.getAttribute("airportlist");
 						%>
-						<table>
+						<table class="form_details">
 							<tr>
 								<td><label class="input_label"> Last Name</label></td>
 								<td><input type="text" name=lname></td>
@@ -46,8 +46,8 @@
 							</tr>
 							<tr>
 								<td><label class="input_label">Sex</label></td>
-									<td><input type="radio" name=sex value=m>Male</td>
-									<td><input type="radio" name=sex value=f>Female</td>
+									<td><input type="radio" name=sex value=m>Male
+									<input type="radio" name=sex value=f>Female</td>
 							
 								
 							</tr>
