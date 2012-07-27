@@ -38,11 +38,12 @@
 						<%
 							ArrayList apList = (ArrayList) request.getAttribute("airportlist");
 						%>
-						<table>
+						<table class="form_details">
 							<tr>
 								<td><label class="input_label"> Departure Airport</label></td>
 								<td width="30px"><select name="sourcecity"
 									class="input_select">
+									<option value="select">Select</option>
 										<%
 											for (int i = 0; i < apList.size(); i++) {
 
@@ -58,6 +59,7 @@
 								<td><label class="input_label"> Destination Airport</label></td>
 								<td width="30px"><select name="destinationcity"
 									class="input_select">
+									<option value="select">Select</option>
 										<%
 											for (int i = 0; i < apList.size(); i++) {
 
@@ -73,7 +75,7 @@
 								<td><label class="input_label"> Date of Travel</label></td>
 								<td width="30px"><input type="text" class="datepicker" name="departuredate"></td>
 							</tr>
-							<tr></tr>
+							</tr>
 							
 						</table>
 						<br> <input type=submit name=checkFlights class="input_label"
