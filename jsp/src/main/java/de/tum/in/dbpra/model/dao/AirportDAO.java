@@ -144,6 +144,7 @@ public class AirportDAO extends AbstractDAO{
 	}
 
 	
+@SuppressWarnings("serial")
 public static class AirportNotFoundException extends Throwable {
    }
 

@@ -144,7 +144,7 @@ public class FlightSegmentDAO extends AbstractDAO{
 		query=query.concat(f.getFlightNr()+"' ");
 		
 		//List<FlightSegmentBean> flightSegs = new LinkedList<FlightSegmentBean>();
-		FlightSegmentBean flightSeg;
+		//FlightSegmentBean flightSeg;
 		
 		try (Connection connection = getConnection();
 				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {

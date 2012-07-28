@@ -1,15 +1,10 @@
 package de.tum.in.dbpra.model.dao;
 
 import java.sql.*;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.tum.in.dbpra.model.bean.AirportBean;
 import de.tum.in.dbpra.model.bean.FlightBean;
-import de.tum.in.dbpra.model.bean.FlightSegmentBean;
-import de.tum.in.dbpra.model.dao.FlightSegmentDAO.FlightSegmentNotFoundException;
-import de.tum.in.dbpra.model.dao.RouteDAO.RoutePair;
 
 public class FlightDAO extends AbstractDAO{
 	
@@ -117,7 +112,7 @@ public class FlightDAO extends AbstractDAO{
 		
 		
 		//List<FlightBean> flightList = new LinkedList<FlightBean>();
-		FlightBean flight;
+		//FlightBean flight;
 		
 		try (Connection connection = getConnection();
 				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
