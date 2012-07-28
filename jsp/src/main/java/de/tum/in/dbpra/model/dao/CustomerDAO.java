@@ -107,10 +107,12 @@ public class CustomerDAO extends AbstractDAO {
 			preparedStatement.setDate(3, c.getDOB());
 
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
+				System.out.println("BARIS: myCustomerID = resultSet.getInt(1);");
 				resultSet.next();
 				myCustomerID = resultSet.getInt(1);
 				resultSet.close();
 			} catch (SQLException e) {
+				System.out.println("BARIS: myCustomerID = resultSet.getInt(1);");
 				e.printStackTrace();
 				throw new CustomerNotFoundException();
 			}
