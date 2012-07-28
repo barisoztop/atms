@@ -8,6 +8,13 @@
 <script type="text/javascript"  src="/jS/jquery-1.6.4.min.js"></script>
 <link    href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript"  src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" ></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".datepicker").datepicker({
+			dateFormat : 'yy-mm-dd'
+		});
+	});
+</script>
 
 <jsp:useBean id="airport" scope="request"
 	class="de.tum.in.dbpra.model.bean.AirportBean" />
@@ -42,7 +49,8 @@
 							</tr>
 							<tr>
 								<td><label class="input_label"> Dob</label></td>
-									<td><input type="text" name=dob></td>
+									<td><input type="text" class="datepicker"
+										name="dob"></td>
 							</tr>
 							<tr>
 								<td><label class="input_label">Sex</label></td>
