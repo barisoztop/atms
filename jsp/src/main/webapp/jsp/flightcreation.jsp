@@ -1,10 +1,10 @@
-<%@page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="de.tum.in.dbpra.model.bean.AirportBean"%>
 <%@ page import="java.util.ArrayList"%>
 <%@page import="de.tum.in.dbpra.model.bean.RoutePairBean"%>
 <jsp:useBean id="airport" scope="request"
 	class="de.tum.in.dbpra.model.bean.AirportBean" />
+
 <!DOCTYPE html>
 
 <html lang="en">
