@@ -27,7 +27,7 @@
 				<h2>
 					Live Demo and Presentation 
 				</h2>
-				<p class="page_heaer">
+				<p class="page_header">
 				    Welcome to Air Traffic Management System Demo From Team 1. 
 				   			    
 				</p>
