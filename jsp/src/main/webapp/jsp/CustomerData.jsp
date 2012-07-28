@@ -19,7 +19,7 @@
 	<jsp:include page="/public/TopContent.jsp"></jsp:include>
 
 	<div id="content-container1">
-	
+
 		<jsp:include page="/public/LeftContent.jsp"></jsp:include>
 
 		<center>
@@ -48,10 +48,10 @@
 								<td><label class="input_label">Sex</label></td>
 									<td><input type="radio" name=sex value=m>Male
 									<input type="radio" name=sex value=f>Female</td>
-							
-								
+
+
 							</tr>
-							
+
 						</table>
 						<br> <input type=submit name=checkFlights class="input_label"
 							value="Confirm Booking">
@@ -63,9 +63,9 @@
 
 
 	</div>
-	
+
 	<jsp:include page="/public/BottomContent.jsp"></jsp:include>
-	
+
 </div>
 </body>
 </html>

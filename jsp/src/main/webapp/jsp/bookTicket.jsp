@@ -20,14 +20,14 @@
 </head>
 
 <div id="container">
-	
+
 	<jsp:include page="/public/TopContent.jsp"></jsp:include>
-	
+
 
 	<div id="content-container1">
-		
+
 		<jsp:include page="/public/LeftContent.jsp"></jsp:include>
-		
+
 
 		<center>
 			<div id="content">
@@ -68,7 +68,7 @@
 										<%
 											}
 										%>
-									
+
 									</select></td>
 							</tr>
 							<tr>
@@ -76,7 +76,7 @@
 								<td width="30px"><input type="text" class="datepicker" name="departuredate"></td>
 							</tr>
 							</tr>
-							
+
 						</table>
 						<br> <input type=submit name=checkFlights class="input_label"
 							value="Check for Flights">
@@ -88,9 +88,9 @@
 
 
 	</div>
-	
+
 	<jsp:include page="/public/BottomContent.jsp"></jsp:include>
-	
+
 </div>
 </body>
 </html>

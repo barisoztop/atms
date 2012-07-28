@@ -29,7 +29,7 @@
 	<jsp:include page="/public/TopContent.jsp"></jsp:include>
 
 	<div id="content-container1">
-	
+
 		<jsp:include page="/public/LeftContent.jsp"></jsp:include>
 
 
@@ -39,20 +39,20 @@
 
 					<%
 					HashMap flights = (HashMap) request.getAttribute("flightmap");
-					
+
 					if (flights.size()==0)
 					{ // if no routes
 					%>
 					<p>
                         <center>
-						No Flights Available in the selected route for the date 
+						No Flights Available in the selected route for the date
                       <br>
 						<a href="#" onclick="history.go(-1)"> Change Flight Selection</a>
 						</center>
 					</p>
 					<%
-						} 
-					else 
+						}
+					else
 					{
 					   Set flightSet = flights.entrySet();
 					   Iterator itr = flightSet.iterator();
@@ -113,7 +113,7 @@
 					</table>
 
 
-					
+
 
 					<div>
 						<center>
@@ -121,14 +121,14 @@
 						</center>
 					</div>
 					<%
-						
+
 						}
 					%>
 
-					
+
 					</div>
 					</div>
-					
+
 
 
 </div>
