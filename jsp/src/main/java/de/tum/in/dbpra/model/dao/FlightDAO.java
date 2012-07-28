@@ -57,21 +57,22 @@ public class FlightDAO extends AbstractDAO{
 			throws FlightNotFoundException{
 		
 		String query = new StringBuilder()
-		.append("SELECT FLIGHTID,SOURCE_CITY,DESTINATION_CITY,ARRIVAL_TIME,ARRIVAL_DATE,DEPARTURE_TIME,DEPARTURE_DATE ")
-		.append("FROM FLIGHT f ")
-		.append("WHERE ")
+		
+		.append("SELECT f.flightid, r.apcode_src, r.apcode_dst, f.ARRIVAL_TIME, f.ARRIVAL_DATE, f.DEPARTURE_TIME, f.DEPARTURE_DATE ")
+		.append("FROM FLIGHT f, FLIGHT_CONSISTS_OF fco, FLIGHTSEGMENT fs, ROUTE r ")
+		.append("WHERE f.flightid = fco.flightid AND fco.flightnr = fs.flightnr AND fs.routeid = r.routeid AND ")
 		.toString();
 		
-		query=query.concat("SOURCE_CITY = '");
+		query=query.concat("r.apcode_src = '");
 		query=query.concat(f.getSourceCity()+"' and " );
-		query=query.concat("DESTINATION_CITY = '");
+		query=query.concat("r.apcode_dst = '");
 		query=query.concat(f.getDestinationCity()+"'  and ");
-		query=query.concat("DEPARTURE_DATE = '");
+		query=query.concat("f.DEPARTURE_DATE = '");
 		//Maybe date.toString() has different format with the database
 		query=query.concat(f.getDepartureDate().toString()+"' ");
 		//query.concat("ARRIVAL_DATE = '");
 		//query.concat(f.getArrivalDate().toString()+"' ");
-		
+		System.out.println("BARIS: " + query);
 		List<FlightBean> flightList = new LinkedList<FlightBean>();
 		
 		try (Connection connection = getConnection();
@@ -106,12 +107,12 @@ public class FlightDAO extends AbstractDAO{
 			throws FlightNotFoundException{
 		
 		String query = new StringBuilder()
-		.append("SELECT FLIGHTID,SOURCE_CITY,DESTINATION_CITY,ARRIVAL_TIME,ARRIVAL_DATE,DEPARTURE_TIME,DEPARTURE_DATE ")
-		.append("FROM FLIGHT f ")
-		.append("WHERE ")
+		.append("SELECT f.flightid, r.apcode_src, r.apcode_dst, f.ARRIVAL_TIME, f.ARRIVAL_DATE, f.DEPARTURE_TIME, f.DEPARTURE_DATE ")
+		.append("FROM FLIGHT f, FLIGHT_CONSISTS_OF fco, FLIGHTSEGMENT fs, ROUTE r ")
+		.append("WHERE f.flightid = fco.flightid AND fco.flightnr = fs.flightnr AND fs.routeid = r.routeid AND ")
 		.toString();
 		
-		query = query.concat("FLIGHTID = ");
+		query = query.concat("f.flightid = ");
 		query = query.concat(f.getFlightID()+" ");
 		
 		
