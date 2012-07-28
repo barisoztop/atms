@@ -27,7 +27,7 @@
 				<h2>Customer Information</h2>
 				<div id="formdiv">
 
-					<form  method="post" action="/searchflight">
+					<form  method="post" action="/bookticket">
 						<%
 							ArrayList apList = (ArrayList) request.getAttribute("airportlist");
 						%>
