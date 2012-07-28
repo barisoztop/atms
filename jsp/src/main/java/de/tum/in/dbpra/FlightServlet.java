@@ -4,6 +4,7 @@
 package de.tum.in.dbpra;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -35,7 +36,7 @@ public class FlightServlet extends HttpServlet {
 			  AirportBean airportbean = null;
 			  AirportDAO airportDAO = new AirportDAO();
 		      
-	          ArrayList<AirportBean> airportList = new ArrayList<AirportBean>() ;
+	          List<AirportBean> airportList = new ArrayList<AirportBean>() ;
  	        
 	          airportList = airportDAO.getAirportList();
  	          request.setAttribute("airport", airportbean);
@@ -65,7 +66,7 @@ public class FlightServlet extends HttpServlet {
     	String arrivalAirport = "";
     	String successMessage = "";
     	
-		ArrayList airportList = new ArrayList() ;
+		List<AirportBean> airportList = new ArrayList<AirportBean>() ;
     	
     	try {
     		
