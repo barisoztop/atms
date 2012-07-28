@@ -12,12 +12,17 @@ public class TicketDAO extends AbstractDAO{
 	public void createNewTicket(TicketBean t) throws TicketInsertException{
 		
 		String query = new StringBuilder()
-		.append("INSERT INTO TICKET(TICKETID,FLIGHTID,TOTALFARE,NOOFCHILDREN,DEPARTURETIME,DEPARTUREDATE,DEPARTUREAIRPORTCODE,CURRENCY,ARRIVALAIRPORTCODE,ARRIVALTIME,ARRIVALDATE,CUSTOMERID)")
+		.append("INSERT INTO TICKET(TICKETID,FLIGHTID,TOTALFARE,NOOFCHILDREN,DEPARTURE_TIME,DEPARTURE_DATE,APCODE_SRC,CURRENCY,APCODE_DST,ARRIVAL_TIME,ARRIVAL_DATE,CUSTOMERID)")
 		.append("VALUES(case when (SELECT MAX(TICKETID) FROM TICKET)+1 is null then 1 else (SELECT MAX(TICKETID) FROM TICKET)+1 end, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 		.toString();
 		
 		//mock-up data
 	    t.setTotalFare(0.0);
+	    
+//	    System.out.println("BARIS_TICKET: " + query);
+//	    System.out.println("BARIS_TICKETXX: " + "1)" + t.getFlightID() + "2)" + t.getTotalFare() + "3)" + t.getNoOfChildren() + "4)" + t.getDepartureTime() +
+//	    		"5)" + t.getDepartureDate() + "6)" + t.getDepartureAirportCode() + "7)" + t.getCurrency() + "8)" + t.getArrivalAirportCode() +  "9)" + t.getArrivalTime()
+//	    		+ "10)" + t.getArrivalDate() + "11)" + t.getCustomerID());
 		
 		try (Connection connection = getConnection();
 			

@@ -27,14 +27,17 @@ public class TransactionDAO extends AbstractDAO{
 	    //mock-up data
 	    t.setAmount(0.0);
 	    
-//	    System.out.println(t.getAgentID());
-//	    System.out.println(t.getFlightID());
-//	    System.out.println(timeStamp.toString());
-//	    System.out.println(t.getCurrency());
-//	    System.out.println(t.gett_status());
-//	    System.out.println(t.getModeOfPayment());
-//	    System.out.println(t.getAmount());
-//	    System.out.println(t.getTypeOfTransaction());
+	    System.out.println("d--d--d-");
+	    System.out.println(t.getAgentID());
+	    System.out.println(t.getFlightID());
+	    System.out.println(timeStamp.toString());
+	    System.out.println(t.getCurrency());
+	    System.out.println(t.gett_status());
+	    System.out.println(t.getModeOfPayment());
+	    System.out.println(t.getAmount());
+	    System.out.println(t.getTypeOfTransaction());
+	    System.out.println(t.getCustomerID());
+	    System.out.println("-----");
 	    
 		try (Connection connection = getConnection();
 			
