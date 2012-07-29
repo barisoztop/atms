@@ -125,7 +125,8 @@ public class FlightServlet extends HttpServlet {
      	    request.setAttribute("srcAirport", departureAirport);
      	    request.setAttribute("dstAirport", arrivalAirport);
      	    request.setAttribute("routeId", routeId);
-         	
+     	    request.setAttribute("successMessage", successMessage);
+     	    
          	System.out.println("Success message = "+successMessage);
     		
     	} catch (Throwable e) {
