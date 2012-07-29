@@ -8,10 +8,17 @@
 <html>
 <head>
 
-<link rel="stylesheet" type="text/css" href="/css/datepicker.css" />
-<script type="text/javascript" src="/jS/datepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
-<script type="text/javascript"  src="/jS/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="/jS/jquery-1.6.4.min.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script type="text/javascript">
+			$(document).ready(function() {
+				$(".datepicker").datepicker({
+					dateFormat : 'yy-mm-dd'
+				});
+			});
+</script>
 
 <jsp:useBean id="airport" scope="request"
 	class="de.tum.in.dbpra.model.bean.AirportBean" />
@@ -124,18 +131,16 @@
 
 								</select>
 								</td>
-								<td>Departure Date : <input type="text"
-									name="departureDate" id="ddate"><input type=button
-									value="Select Date"
-									onclick="displayDatePicker('departureDate', this);">
+								<td>Departure Date : 
+									<input type="text" class="datepicker" name="departureDate" id="ddate">
 								</td>
 								<td>Departure Time : <input type="text"
-									name="departureTime" id="dtime"> hh:mm:ss
+									name="departureTime" id="dtime" value="hh:mm:ss">
 								</td>
 							</tr>
 
 							<tr>
-								<td>To : &nbsp;&nbsp;&nbsp; <select name="arrivalAirport"
+								<td>To :  <select name="arrivalAirport"
 									id="arrivalAirport" onChange="">
 										<option value=0>Select Airport</option>
 										<%
@@ -152,13 +157,11 @@
 
 								</select>
 								</td>
-								<td>Arrival Date : &nbsp;&nbsp;&nbsp;&nbsp; <input
-									type="text" name="arrivalDate" id="adate"><input
-									type=button value="Select Date"
-									onclick="displayDatePicker('arrivalDate', this);">
+								<td>Arrival Date :
+									<input type="text" name="arrivalDate" class="datepicker"id="adate">
 								</td>
-								<td>Arrival Time : &nbsp;&nbsp;&nbsp;&nbsp; <input
-									type="text" name="arrivalTime" id="atime"> hh:mm:ss
+								<td>Arrival Time : <input
+									type="text" name="arrivalTime" id="atime" value="hh:mm:ss">
 								</td>
 							</tr>
 						</table>

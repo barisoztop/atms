@@ -212,7 +212,7 @@ background-color: gray;
 }
 
 .form_details tr {
-	text-align: center;
+	text-align: left;
 	
 }
 .form_details tr:HOVER {
