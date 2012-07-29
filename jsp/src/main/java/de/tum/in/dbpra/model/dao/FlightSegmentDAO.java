@@ -135,9 +135,9 @@ public class FlightSegmentDAO extends AbstractDAO{
 			throws FlightSegmentNotFoundException{
 		
 		String query = new StringBuilder()
-		.append("SELECT FLIGHTNR, ARRIVAL_TIME, ARRIVAL_DATE, DEPARTURE_TIME, DEPARTURE_DATE, ROUTEID,SOURCE_CITY,DESTINATION_CITY ")
-		.append("FROM FLIGHTSEGMENT f ")
-		.append("WHERE ")
+		.append("SELECT f.FLIGHTNR, f.ARRIVAL_TIME, f.ARRIVAL_DATE, f.DEPARTURE_TIME, f.DEPARTURE_DATE, f.ROUTEID, r.apcode_src, r.apcode_dst ")
+		.append("FROM FLIGHTSEGMENT f, ROUTE r ")
+		.append("WHERE f.ROUTEID = r.ROUTEID AND ")
 		.toString();
 		
 		query=query.concat("FLIGHTNR = '");
