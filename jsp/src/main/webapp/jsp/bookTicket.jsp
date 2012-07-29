@@ -3,13 +3,10 @@
 <%@page import="java.util.ArrayList"%>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="/css/main.css" />
-		<script type="text/javascript" src="/jS/jquery-1.6.4.min.js"></script>
-		<link
-			href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
-			rel="stylesheet" type="text/css" />
-		<script type="text/javascript"
-			src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="/css/main.css" />
+		<link type="text/css" rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.22.custom.css" />
+		<script type="text/javascript" src="/jS/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="/jS/jquery-ui-1.8.22.custom.min.js"></script>
 		
 		<jsp:useBean id="airport" scope="request"
 			class="de.tum.in.dbpra.model.bean.AirportBean" />
@@ -37,8 +34,8 @@
 							%>
 							<table class="form_details">
 								<tr>
-									<td><label class="input_label"> Departure Airport</label></td>
-									<td width="30px"><select name="sourcecity"
+									<td>Departure Airport:
+									<select name="sourcecity"
 										class="input_select">
 											<option value="select">Select</option>
 											<%
@@ -51,10 +48,8 @@
 											%>
 											<option>
 									</select></td>
-								</tr>
-								<tr>
-									<td><label class="input_label"> Destination Airport</label></td>
-									<td width="30px"><select name="destinationcity"
+									<td>Destination Airport: 
+									<select name="destinationcity"
 										class="input_select">
 											<option value="select">Select</option>
 											<%
@@ -67,17 +62,12 @@
 											%>
 	
 									</select></td>
-								</tr>
-								<tr>
-									<td><label class="input_label"> Date of Travel</label></td>
-									<td width="30px"><input type="text" class="datepicker"
+									<td>Date of Travel:
+									<input type="text" class="datepicker"
 										name="departuredate"></td>
 								</tr>
-								</tr>
-	
 							</table>
-							<br> <input type=submit name=checkFlights class="input_label"
-								value="Check for Flights">
+							<br> <input type=submit name=checkFlights value="Check for Flights">
 						</form>
 					</div>
 				</div>

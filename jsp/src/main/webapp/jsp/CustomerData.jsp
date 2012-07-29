@@ -4,10 +4,10 @@
 <%@page import="java.util.ArrayList"%>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="/css/main.css" />
-<script type="text/javascript"  src="/jS/jquery-1.6.4.min.js"></script>
-<link    href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript"  src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" ></script>
+<link type="text/css" rel="stylesheet" href="/css/main.css" />
+<link type="text/css" rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.22.custom.css" />
+<script type="text/javascript" src="/jS/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/jS/jquery-ui-1.8.22.custom.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$(".datepicker").datepicker({
@@ -40,20 +40,20 @@
 						%>
 						<table class="form_details">
 							<tr>
-								<td><label class="input_label"> Last Name</label></td>
+								<td>Last Name: </td>
 								<td><input type="text" name=lname></td>
 							</tr>
 							<tr>
-								<td><label class="input_label"> First Name</label></td>
+								<td>First Name: </td>
 								<td><input type="text" name=fname></td>
 							</tr>
 							<tr>
-								<td><label class="input_label"> Dob</label></td>
+								<td>Dob</td>
 									<td><input type="text" class="datepicker"
 										name="dob"></td>
 							</tr>
 							<tr>
-								<td><label class="input_label">Sex</label></td>
+								<td>Sex</td>
 									<td><input type="radio" name=sex value=m>Male
 									<input type="radio" name=sex value=f>Female</td>
 
@@ -61,8 +61,7 @@
 							</tr>
 
 						</table>
-						<br> <input type=submit name=checkFlights class="input_label"
-							value="Confirm Booking">
+						<br> <input type=submit name=checkFlights value="Confirm Booking">
 					</form>
 
 				</div>

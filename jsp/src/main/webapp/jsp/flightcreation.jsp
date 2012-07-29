@@ -8,17 +8,19 @@
 <html>
 <head>
 
-<link rel="stylesheet" type="text/css" href="/css/main.css" />
-<script type="text/javascript" src="/jS/jquery-1.6.4.min.js"></script>
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<link type="text/css" rel="stylesheet" href="/css/main.css" />
+<link type="text/css" rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.22.custom.css" />
+<script type="text/javascript" src="/jS/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/jS/jquery-ui-1.8.22.custom.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".datepicker").datepicker({
+			dateFormat : 'yy-mm-dd'
+		});
+	});
+</script>
 <script type="text/javascript">
 			$(document).ready(function() {
-				$(".datepicker").datepicker({
-					dateFormat : 'yy-mm-dd'
-				});
-				
-				$(function(){
 				    $('form input').data('val',  $('form input').val() ); // save value
 				    $('form input').change(function() { // works when input will be blured and the value was changed
 				        // console.log('input value changed');
@@ -30,10 +32,8 @@
 				            $(this).change(); // simulate "change" event
 				        }
 				    });
-				});​
-			});
+				});
 </script>
-
 <jsp:useBean id="airport" scope="request"
 	class="de.tum.in.dbpra.model.bean.AirportBean" />
 
@@ -146,7 +146,7 @@
 								</select>
 								</td>
 								<td>Departure Date : 
-									<input type="text" class="datepicker" name="departureDate" id="ddate">
+									<input type="text" class="datepicker" name="departureDate">
 								</td>
 								<td>Departure Time : <input type="text"
 									name="departureTime" id="dtime"  placeholder="hh:mm:ss">
@@ -172,7 +172,7 @@
 								</select>
 								</td>
 								<td>Arrival Date :
-									<input type="text" name="arrivalDate" class="datepicker"id="adate">
+									<input type="text" name="arrivalDate" class="datepicker">
 								</td>
 								<td>Arrival Time : <input
 									type="text" name="arrivalTime" id="atime"  placeholder="hh:mm:ss">
