@@ -51,8 +51,8 @@ public class CustomerDAO extends AbstractDAO {
 			int myCustomerID;
 
 			String query2 = new StringBuilder().append("SELECT CUSTOMERID ")
-					.append("FROM CUSTOMER c ")
-					.append("WHERE FNAME = ? AND LNAME = ? AND DOB = ? ")
+					.append("FROM CUSTOMER ")
+					.append("WHERE FNAME = ? AND LNAME = ? AND DOB = DATE(?) ")
 					.toString();
 
 			// System.out.println("CustomerDAO query 2 : "+query2);
@@ -91,8 +91,8 @@ public class CustomerDAO extends AbstractDAO {
 
 		String query = new StringBuilder()
 				.append("SELECT CUSTOMERID ")
-				.append("FROM CUSTOMER c ")
-				.append("WHERE FNAME = ? AND LNAME = ? AND DOB = ? ")
+				.append("FROM CUSTOMER ")
+				.append("WHERE FNAME = ? AND LNAME = ? AND DOB = DATE(?) ")
 				.toString();
 
 		// List<CustomerBean> myCustomers = new LinkedList<CustomerBean>();
@@ -107,18 +107,21 @@ public class CustomerDAO extends AbstractDAO {
 			preparedStatement.setDate(3, c.getDOB());
 
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
-				System.out.println("BARIS: myCustomerID = resultSet.getInt(1);");
-				resultSet.next();
-				myCustomerID = resultSet.getInt(1);
+				if (resultSet.next()) {
+					myCustomerID = resultSet.getInt(1);
+					System.out.println("BARIS: customer id line D: " + myCustomerID);
+				} else {
+					System.out.println("BARIS: customer id cannot be found line A");
+					throw new CustomerNotFoundException();
+				}
 				resultSet.close();
 			} catch (SQLException e) {
-				System.out.println("BARIS: myCustomerID = resultSet.getInt(1);");
-				e.printStackTrace();
+				System.out.println("BARIS: customer id cannot be found line B");
 				throw new CustomerNotFoundException();
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("BARIS: customer id cannot be found line C");
 			throw new CustomerNotFoundException();
 		}
 		return myCustomerID;
