@@ -17,6 +17,20 @@
 				$(".datepicker").datepicker({
 					dateFormat : 'yy-mm-dd'
 				});
+				
+				$(function(){
+				    $('form input').data('val',  $('form input').val() ); // save value
+				    $('form input').change(function() { // works when input will be blured and the value was changed
+				        // console.log('input value changed');
+				        $('.log').append(' change');
+				    });
+				    $('form input').keyup(function() { // works immediately when user press button inside of the input
+				        if( $('form input').val() != $('form input').data('val') ){ // check if value changed
+				            $('form input').data('val',  $('form input').val() ); // save new value
+				            $(this).change(); // simulate "change" event
+				        }
+				    });
+				});​
 			});
 </script>
 
@@ -135,7 +149,7 @@
 									<input type="text" class="datepicker" name="departureDate" id="ddate">
 								</td>
 								<td>Departure Time : <input type="text"
-									name="departureTime" id="dtime" value="hh:mm:ss">
+									name="departureTime" id="dtime"  placeholder="hh:mm:ss">
 								</td>
 							</tr>
 
@@ -161,7 +175,7 @@
 									<input type="text" name="arrivalDate" class="datepicker"id="adate">
 								</td>
 								<td>Arrival Time : <input
-									type="text" name="arrivalTime" id="atime" value="hh:mm:ss">
+									type="text" name="arrivalTime" id="atime"  placeholder="hh:mm:ss">
 								</td>
 							</tr>
 						</table>
