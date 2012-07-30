@@ -34,8 +34,6 @@
 				    });
 				});
 </script>
-<jsp:useBean id="airport" scope="request"
-	class="de.tum.in.dbpra.model.bean.AirportBean" />
 
 <script>
        function retainPreviousData(){
@@ -209,12 +207,10 @@
 										<option value=0>Select Airport</option>
 										<%
 											for (int a = 0; a < airportList.size(); a++) {
+												if(airportList.get(a) != null)
 										%>
 
-										<%
-											airport = (AirportBean) airportList.get(a);
-										%>
-										<option value=<%=airport.getApcode()%>><%=airport.getApname() + "-" + airport.getApcode()%></option>
+										<option value=<%=airportList.get(a).getApcode()%>><%=airportList.get(a).getApname() + "-" + airportList.get(a).getApcode()%></option>
 										<%
 											}
 										%>
@@ -235,12 +231,10 @@
 										<option value=0>Select Airport</option>
 										<%
 											for (int a = 0; a < airportList.size(); a++) {
+												if(airportList.get(a) != null)
 										%>
 
-										<%
-											airport = (AirportBean) airportList.get(a);
-										%>
-										<option value=<%=airport.getApcode()%>><%=airport.getApname() + "-" + airport.getApcode()%></option>
+										<option value=<%=airportList.get(a).getApcode()%>><%=airportList.get(a).getApname() + "-" +airportList.get(a).getApcode()%></option>
 										<%
 											}
 										%>
