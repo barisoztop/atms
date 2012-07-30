@@ -78,9 +78,85 @@
     		   alert("Enter the departure time");
     		   return false;
     	   }
-    	   if(document.forms[0].arrivalTime.value == ""){
+    	   
+    	   if(document.forms[0].departureTime.value != null){
+    		   var timeVal = document.forms[0].departureTime.value;
+    		   
+    		   if(timeVal.length > 8){
+    			   alert("Time format is wrong! Follow right format hh:mm:ss for Departure Time");
+    			   return false;
+    		   } 
+    		   
+    		   if(timeVal.length = 8 ) {   
+    			   
+    			   if(timeVal.charAt(2) == ":" && timeVal.charAt(5) == ":"){
+        			 //  alert("right format");
+    				   var hour = Number(timeVal.substring(0, 2));
+    	    		   var minute = Number(timeVal.substring(3, 5));
+    	    		   var second = Number(timeVal.substring(6, 8));
+    	    		   if(hour > 24){
+    	    			   alert ("Hour cannot be greater than 24 : Error in Departure Time");
+    	    			   return false;
+    	    		   }
+    	    		   if(minute > 59){
+    	    			   alert("Minutes cannot be greater than 59 : Error in Departure Time");
+    	    			   return false;
+    	    		   }
+    	    		   if(second > 59){
+    	    			   alert("Seconds cannot be greater than 59 : Error in Departure Time");
+    	    			   return false;
+    	    		   }
+        		   }else {
+        			   alert("Time format is wrong! Follow right format hh:mm:ss for Departure Time");
+        			   return false;
+        		   }
+    		   }
+    			   
+    		   
+    	 
+    	   }
+    	   
+    	   
+		   if(document.forms[0].arrivalTime.value == ""){
     		   alert("Enter the arrival time");
     		   return false;
+    	   }
+		   
+		   if(document.forms[0].arrivalTime.value != null){
+    		   var timeVal = document.forms[0].arrivalTime.value;
+    		   
+    		   if(timeVal.length > 8){
+    			   alert("Time format is wrong! Follow right format hh:mm:ss for Arrival Time");
+    			   return false;
+    		   } 
+    		   
+    		   if(timeVal.length = 8 ) {   
+    			   
+    			   if(timeVal.charAt(2) == ":" && timeVal.charAt(5) == ":"){
+        			 //  alert("right format");
+    				   var hour = Number(timeVal.substring(0, 2));
+    	    		   var minute = Number(timeVal.substring(3, 5));
+    	    		   var second = Number(timeVal.substring(6, 8));
+    	    		   if(hour > 24){
+    	    			   alert ("Hour cannot be greater than 24 : Error in Arrival Time");
+    	    			   return false;
+    	    		   }
+    	    		   if(minute > 59){
+    	    			   alert("Minutes cannot be greater than 59 : Error in Arrival Time");
+    	    			   return false;
+    	    		   }
+    	    		   if(second > 59){
+    	    			   alert("Seconds cannot be greater than 59 : Error in Arrival Time");
+    	    			   return false;
+    	    		   }
+        		   }else {
+        			   alert("Time format is wrong! Follow right format hh:mm:ss for Arrival Time");
+        			   return false;
+        		   }
+    		   }
+    			   
+    		   
+    	 
     	   }
     	   if(document.forms[0].departureDate.value == ""){
     		   alert("Enter the departure date");
@@ -96,7 +172,7 @@
     </script>
 </head>
 
-<body onload='retainPreviousData();'>
+<body onload='retainPreviousData();' onSubmit="return validate();">
 	<div id="container">
 
 		<jsp:include page="/public/TopContent.jsp"></jsp:include>
@@ -210,7 +286,7 @@
 						</table>
 
 						<br> <input type="submit" name="createFlight"
-							value="Create Flight" onClick="validate();" />
+							value="Create Flight" onClick="" />
 
 					</form>
 				</div>
