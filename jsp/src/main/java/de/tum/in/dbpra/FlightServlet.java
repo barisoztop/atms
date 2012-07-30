@@ -33,14 +33,12 @@ public class FlightServlet extends HttpServlet {
 		
 		try{
               
-			  AirportBean airportbean = null;
 			  AirportDAO airportDAO = new AirportDAO();
 		      
 	          List<AirportBean> airportList = new ArrayList<AirportBean>() ;
  	        
 	          airportList = airportDAO.getAirportList();
- 	          request.setAttribute("airport", airportbean);
-       	      request.setAttribute("airportList", airportList);
+ 	          request.setAttribute("airportList", airportList);
    	
 		    } 
 		
@@ -70,7 +68,6 @@ public class FlightServlet extends HttpServlet {
     	
     	try {
     		
-    		AirportBean airportbean = null;
     		RouteDAO  rootDao = new RouteDAO();
     		FlightDAO flightDAO = new FlightDAO();
     		AirportDAO airportDAO = new AirportDAO();
@@ -119,8 +116,7 @@ public class FlightServlet extends HttpServlet {
     		}
     	    airportList = airportDAO.getAirportList();
 	        
-    	    request.setAttribute("airport", airportbean);
-     	    request.setAttribute("airportList", airportList);
+    	    request.setAttribute("airportList", airportList);
      	    request.setAttribute("routePair", routePair);
      	    request.setAttribute("srcAirport", departureAirport);
      	    request.setAttribute("dstAirport", arrivalAirport);
