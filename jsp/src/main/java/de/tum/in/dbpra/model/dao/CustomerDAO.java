@@ -52,7 +52,7 @@ public class CustomerDAO extends AbstractDAO {
 
 			String query2 = new StringBuilder().append("SELECT CUSTOMERID ")
 					.append("FROM CUSTOMER ")
-					.append("WHERE FNAME = ? AND LNAME = ? AND DOB = DATE(?) ")
+					.append("WHERE FNAME = ? AND LNAME = ? AND DOB = ? ")
 					.toString();
 
 			// System.out.println("CustomerDAO query 2 : "+query2);
@@ -92,7 +92,7 @@ public class CustomerDAO extends AbstractDAO {
 		String query = new StringBuilder()
 				.append("SELECT CUSTOMERID ")
 				.append("FROM CUSTOMER ")
-				.append("WHERE FNAME = ? AND LNAME = ? AND DOB = DATE(?) ")
+				.append("WHERE FNAME = ? AND LNAME = ? AND DOB = ? ")
 				.toString();
 
 		// List<CustomerBean> myCustomers = new LinkedList<CustomerBean>();
