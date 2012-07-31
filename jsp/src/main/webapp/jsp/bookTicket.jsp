@@ -36,7 +36,7 @@
 								<tr>
 									<td>Departure Airport:
 									<select name="sourcecity"
-										class="input_select">
+										class="input_select"  required="required" >
 											<option value="select">Select</option>
 											<%
 												for (int i = 0; i < apList.size(); i++) {
@@ -50,7 +50,7 @@
 									</select></td>
 									<td>Destination Airport: 
 									<select name="destinationcity"
-										class="input_select">
+										class="input_select" required="required" >
 											<option value="select">Select</option>
 											<%
 												for (int i = 0; i < apList.size(); i++) {

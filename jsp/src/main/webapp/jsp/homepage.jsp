@@ -1,5 +1,5 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE>
 <html>
 <head>
 <link type="text/css" rel="stylesheet" href="/css/main.css" />
@@ -8,8 +8,6 @@
 <script type="text/javascript" src="/jS/jquery-ui-1.8.22.custom.min.js"></script>
 </head>
 
-
-</html>
 
 <div id="container">
 
@@ -30,16 +28,9 @@
 				    Welcome to Air Traffic Management System Demo From Team 1. 
 				   			    
 				</p>
-				<p  class="page_center_content">Team Members 
-				        <ul style="list-style-type: none;list-style-position:inside;">
-				        <li>Ajay Rammohan</li>
-				        <li>Ankit Dubey</li>
-				        <li>Baris Oztop</li>
-				        <li>Hafsa</li>
-				        <li>Part Saelim</li>
-				        <li>Keyvan Kardel</li>
-				        </ul>
-				 </p>
+				<p  class="page_center_content">
+				   Practical Course - Database Systems (IN0012, IN2106, IN8902, IN4006)    
+				</p>
  </div>
 
 </div>

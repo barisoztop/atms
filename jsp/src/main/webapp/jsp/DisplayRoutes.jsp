@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html>
+<head>
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="de.tum.in.dbpra.model.bean.FlightSegmentBean"%>
@@ -12,9 +15,9 @@
 <jsp:useBean id="flightSegment" scope="request"
 	class="de.tum.in.dbpra.model.bean.FlightSegmentBean" />
 
-<!DOCTYPE html>
-<html>
-<head>
+
+
+
 <link type="text/css" rel="stylesheet" href="/css/main.css" />
 <link type="text/css" rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.22.custom.css" />
 <script type="text/javascript" src="/jS/jquery-1.7.2.min.js"></script>
@@ -34,7 +37,7 @@
 
 
 			<div id="content">
-				<h2></h2>
+
 				<div id="formdiv">
 
 					<%
@@ -44,18 +47,20 @@
 					%>
 					<p>
 					<center>
-						No Flights Available in the selected route for the date <br>
-						<a href="#" onclick="history.go(-1)"> Change Flight Selection</a>
+						No Flights Available in the selected route for the date <a
+							href="#" onclick="history.go(-1)"> Change Flight Selection</a>
 					</center>
-					</p>
+
 					<%
 						} else {
 							Set flightSet = flights.entrySet();
 							Iterator itr = flightSet.iterator();
 							// Display elements
 					%><table>
-						<th>Flight</th>
-						<th>Flight Segments</th>
+						<thead>Flight
+						</thead>
+						<thead>Flight Segments
+						</thead>
 						<%
 							while (itr.hasNext()) {
 
@@ -63,13 +68,13 @@
 									flight = (FlightBean) mapE.getKey();
 						%>
 						<tr>
-							<td>=====================</br></td>
-							<td>=================================================================================</br></td>
+							<td>=====================</td>
+							<td>=================================================================================</td>
 						</tr>
 						<tr>
 							<td class="flight_namecoloumn"><a
 								href="/bookticket?flightid=<%=flight.getFlightID()%>">Book
-									this Flight</a> </label></td>
+									this Flight</a></td>
 							<%
 								List<FlightSegmentBean> flightSegs = (List) (mapE
 												.getValue());
@@ -85,9 +90,9 @@
 											flightSegment = flightSegs.get(ii);
 							%>
 							<td class="flight_detailscoloumn">Flight Number <label><%=flightSegment.getFlightNr()%>
-							</label>&nbsp;Departure <label><%=flightSegment.getDepartureDate()%>
-							</label>&nbsp;<label><%=flightSegment.getDepartureTime()%> </label>
-								&nbsp;-->&nbsp;Arrival <label><%=flightSegment.getArrivalDate()%>
+							</label> &nbsp;Depart from &nbsp;<label><%=flightSegment.getSourceCity()%></label>
+								&nbsp;<label><%=flightSegment.getDepartureDate()%> </label>&nbsp;<label><%=flightSegment.getDepartureTime()%>
+							</label> &nbsp;-->&nbsp;Arrive to &nbsp;<label><%=flightSegment.getDestinationCity()%></label>&nbsp;<label><%=flightSegment.getArrivalDate()%>
 							</label>&nbsp;<label><%=flightSegment.getArrivalTime()%> </label></td>
 
 							<%
@@ -98,14 +103,13 @@
 							}
 									}
 						%>
-						</tr>
+
 						<%
 							}
 						%>
 					</table>
 					<table>
 						<thead>
-							<th></th>
 						</thead>
 						<tbody></tbody>
 
