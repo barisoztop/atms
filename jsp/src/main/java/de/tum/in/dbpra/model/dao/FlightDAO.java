@@ -76,42 +76,41 @@ public class FlightDAO extends AbstractDAO {
 
 	}
 
-	public List<FlightBean> searchFlight(FlightBean f)
-			throws FlightNotFoundException {
-
+	public List<FlightBean> searchFlight(FlightBean f) 
+			throws FlightNotFoundException{
+		
 		String query = new StringBuilder()
-				.append("SELECT f.flightid, r.apcode_src, r.apcode_dst, f.ARRIVAL_TIME, f.ARRIVAL_DATE, f.DEPARTURE_TIME, f.DEPARTURE_DATE ")
-				.append("FROM FLIGHT f, FLIGHT_CONSISTS_OF fco, FLIGHTSEGMENT fs, ROUTE r ")
-				.append("WHERE f.flightid = fco.flightid AND fco.flightnr = fs.flightnr AND fs.routeid = r.routeid AND ")
-				.append("r.apcode_src = ? ").append("AND ")
-				.append("r.apcode_dst = ? ").append("AND ")
-				.append("f.DEPARTURE_DATE = ? ").toString();
-
-		System.out.println("BARIS: " + query);
+		.append("SELECT DISTINCT f.flightid, f.ARRIVAL_TIME, f.ARRIVAL_DATE, f.DEPARTURE_TIME, f.DEPARTURE_DATE FROM FLIGHT f, FLIGHT_CONSISTS_OF fco, FLIGHTSEGMENT fs, ROUTE r ")
+		.append("WHERE f.flightid = fco.flightid AND fco.flightnr = fs.flightnr AND fs.routeid = r.routeid ")
+		.append("AND f.DEPARTURE_DATE = ? AND r.apcode_src = ? AND f.flightid IN ")
+		.append("( SELECT f2.flightid FROM FLIGHT f2, FLIGHT_CONSISTS_OF fco2, FLIGHTSEGMENT fs2, ROUTE r2 ")
+		.append("WHERE f2.flightid = fco2.flightid AND fco2.flightnr = fs2.flightnr AND fs2.routeid = r2.routeid ")
+		.append("AND r2.apcode_dst = ?) ")
+		.toString();
+		
+		
 		List<FlightBean> flightList = new LinkedList<FlightBean>();
-
+		
 		try (Connection connection = getConnection();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(query);) {
-
-			preparedStatement.setString(1, f.getSourceCity());
-			preparedStatement.setString(2, f.getDestinationCity());
-			preparedStatement.setString(3, f.getDepartureDate().toString());
-
+				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+			
+			preparedStatement.setDate(1, f.getDepartureDate());
+			preparedStatement.setString(2, f.getSourceCity());
+			preparedStatement.setString(3, f.getDestinationCity());
+			
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
 				while (resultSet.next()) {
 					FlightBean flight = new FlightBean();
 					flight.setFlightID(resultSet.getInt(1));
-					flight.setSourceCity(resultSet.getString(2));
-					flight.setDestinationCity(resultSet.getString(3));
-					flight.setArrivalTime(resultSet.getTime(4));
-					flight.setArrivalDate(resultSet.getDate(5));
-					flight.setDepartureTime(resultSet.getTime(6));
-					flight.setDepartureDate(resultSet.getDate(7));
+					//flight.setSourceCity(resultSet.getString(2));
+					//flight.setDestinationCity(resultSet.getString(3));
+					flight.setArrivalTime(resultSet.getTime(2));
+					flight.setArrivalDate(resultSet.getDate(3));
+					flight.setDepartureTime(resultSet.getTime(4));
+					flight.setDepartureDate(resultSet.getDate(5));
 					flightList.add(flight);
 				}
 				resultSet.close();
-
 			} catch (SQLException e) {
 				if (connection != null) {
 					try {
@@ -124,14 +123,14 @@ public class FlightDAO extends AbstractDAO {
 					}
 				}
 			}
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new FlightNotFoundException();
 		}
 		return flightList;
 	}
-
+	
 	public FlightBean getFlightDetail(FlightBean f)
 			throws FlightNotFoundException {
 
