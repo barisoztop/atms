@@ -1,10 +1,10 @@
 <div id="Site-header">
-<center>
+
 		<p>
 			Air Traffic Management System
 		</p>
-</center>
-	</div>
+
+	
 	
 	<div id="top-navigation">
 		<ul>
@@ -13,3 +13,4 @@
 			<li><a href="/flight" class="Site-header-href">Create New Flight</a></li>
 		</ul>
 	</div>
+</div>
