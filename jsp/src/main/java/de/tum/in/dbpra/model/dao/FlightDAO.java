@@ -6,73 +6,98 @@ import java.util.List;
 
 import de.tum.in.dbpra.model.bean.FlightBean;
 
-public class FlightDAO extends AbstractDAO{
-	
-	
-	
-	public int createNewFlight(String arrivalDate,String departureDate,String arrivalTime, String departureTime)
-			throws FlightInsertException{
-		
+public class FlightDAO extends AbstractDAO {
+
+	public int createNewFlight(String arrivalDate, String departureDate,
+			String arrivalTime, String departureTime)
+			throws FlightInsertException {
+
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		Statement stmt = null;
 		int flightId = 0;
-		
+
 		String query = new StringBuilder()
-		.append("INSERT INTO FLIGHT(ARRIVAL_TIME, ARRIVAL_DATE,	DEPARTURE_TIME,	DEPARTURE_DATE) ")
-		.append("VALUES('"+arrivalTime+"','"+arrivalDate+"','"+departureTime+"','"+departureDate+"')")
-		.toString();
-		
-		String query2 =  new StringBuilder()
-		.append("SELECT IDENTITY_VAL_LOCAL() FROM SYSIBM.SYSDUMMY1").toString();
-		
-		
-		try  {
-			    connection = getConnection();
-		        stmt = connection.createStatement();
-			    preparedStatement = connection.prepareStatement(query);
-			    preparedStatement.executeUpdate();
-			
-			    ResultSet resultSet = stmt.executeQuery(query2);
-			    while (resultSet.next()) {
-				       flightId = Integer.parseInt(resultSet.getString(1));
-				      
-			    }
-			    
+				.append("INSERT INTO FLIGHT(ARRIVAL_TIME, ARRIVAL_DATE,	DEPARTURE_TIME,	DEPARTURE_DATE) ")
+				.append("VALUES(?, ?, ?, ?)").toString();
+
+		String query2 = new StringBuilder().append(
+				"SELECT IDENTITY_VAL_LOCAL() FROM SYSIBM.SYSDUMMY1").toString();
+
+		try {
+			connection = getConnection();
+			connection.setAutoCommit(false);
+			stmt = connection.createStatement();
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, arrivalTime);
+			preparedStatement.setString(2, arrivalDate);
+			preparedStatement.setString(3, departureTime);
+			preparedStatement.setString(4, departureDate);
+
+			preparedStatement.executeUpdate();
+
+			ResultSet resultSet = stmt.executeQuery(query2);
+			while (resultSet.next()) {
+				flightId = Integer.parseInt(resultSet.getString(1));
+
+			}
+
+			resultSet.close();
+			stmt.close();
+			connection.commit();
+			connection.close();
+
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new FlightInsertException();
+			if (connection != null) {
+				try {
+					System.err
+							.print("Creation of new flight is being rolled back");
+					connection.rollback();
+					connection.close();
+				} catch (SQLException excep) {
+					System.err
+							.print("SQL error occurs : " + excep.getMessage());
+				}
+			}
+
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					System.err.print("SQL error occurs : " + e.getMessage());
+					e.printStackTrace();
+				}
+
+			}
 		}
-		
-	return flightId;	
+
+		return flightId;
 
 	}
-	
-	public List<FlightBean> searchFlight(FlightBean f) 
-			throws FlightNotFoundException{
-		
+
+	public List<FlightBean> searchFlight(FlightBean f)
+			throws FlightNotFoundException {
+
 		String query = new StringBuilder()
-		
-		.append("SELECT f.flightid, r.apcode_src, r.apcode_dst, f.ARRIVAL_TIME, f.ARRIVAL_DATE, f.DEPARTURE_TIME, f.DEPARTURE_DATE ")
-		.append("FROM FLIGHT f, FLIGHT_CONSISTS_OF fco, FLIGHTSEGMENT fs, ROUTE r ")
-		.append("WHERE f.flightid = fco.flightid AND fco.flightnr = fs.flightnr AND fs.routeid = r.routeid AND ")
-		.toString();
-		
-		query=query.concat("r.apcode_src = '");
-		query=query.concat(f.getSourceCity()+"' and " );
-		query=query.concat("r.apcode_dst = '");
-		query=query.concat(f.getDestinationCity()+"'  and ");
-		query=query.concat("f.DEPARTURE_DATE = '");
-		//Maybe date.toString() has different format with the database
-		query=query.concat(f.getDepartureDate().toString()+"' ");
-		//query.concat("ARRIVAL_DATE = '");
-		//query.concat(f.getArrivalDate().toString()+"' ");
+				.append("SELECT f.flightid, r.apcode_src, r.apcode_dst, f.ARRIVAL_TIME, f.ARRIVAL_DATE, f.DEPARTURE_TIME, f.DEPARTURE_DATE ")
+				.append("FROM FLIGHT f, FLIGHT_CONSISTS_OF fco, FLIGHTSEGMENT fs, ROUTE r ")
+				.append("WHERE f.flightid = fco.flightid AND fco.flightnr = fs.flightnr AND fs.routeid = r.routeid AND ")
+				.append("r.apcode_src = ? ").append("AND ")
+				.append("r.apcode_dst = ? ").append("AND ")
+				.append("f.DEPARTURE_DATE = ? ").toString();
+
 		System.out.println("BARIS: " + query);
 		List<FlightBean> flightList = new LinkedList<FlightBean>();
-		
+
 		try (Connection connection = getConnection();
-				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-			
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(query);) {
+
+			preparedStatement.setString(1, f.getSourceCity());
+			preparedStatement.setString(2, f.getDestinationCity());
+			preparedStatement.setString(3, f.getDepartureDate().toString());
+
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
 				while (resultSet.next()) {
 					FlightBean flight = new FlightBean();
@@ -86,67 +111,77 @@ public class FlightDAO extends AbstractDAO{
 					flightList.add(flight);
 				}
 				resultSet.close();
+
 			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new FlightNotFoundException();
+				if (connection != null) {
+					try {
+						System.err
+								.print("Flight search could not be performed");
+						connection.close();
+					} catch (SQLException excep) {
+						System.err.print("SQL error occurs : "
+								+ excep.getMessage());
+					}
+				}
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new FlightNotFoundException();
 		}
 		return flightList;
 	}
-	
-	public FlightBean getFlightDetail(FlightBean f) 
-			throws FlightNotFoundException{
-		
+
+	public FlightBean getFlightDetail(FlightBean f)
+			throws FlightNotFoundException {
+
 		String query = new StringBuilder()
-		.append("SELECT f.flightid, r.apcode_src, r.apcode_dst, f.ARRIVAL_TIME, f.ARRIVAL_DATE, f.DEPARTURE_TIME, f.DEPARTURE_DATE ")
-		.append("FROM FLIGHT f, FLIGHT_CONSISTS_OF fco, FLIGHTSEGMENT fs, ROUTE r ")
-		.append("WHERE f.flightid = fco.flightid AND fco.flightnr = fs.flightnr AND fs.routeid = r.routeid AND ")
-		.toString();
-		
-		query = query.concat("f.flightid = ");
-		query = query.concat(f.getFlightID()+" ");
-		
-		
-		//List<FlightBean> flightList = new LinkedList<FlightBean>();
-		//FlightBean flight;
-		
+				.append("SELECT f.flightid, r.apcode_src, r.apcode_dst, f.ARRIVAL_TIME, f.ARRIVAL_DATE, f.DEPARTURE_TIME, f.DEPARTURE_DATE ")
+				.append("FROM FLIGHT f, FLIGHT_CONSISTS_OF fco, FLIGHTSEGMENT fs, ROUTE r ")
+				.append("WHERE f.flightid = fco.flightid AND fco.flightnr = fs.flightnr AND fs.routeid = r.routeid AND ")
+				.append("f.flightid =  ? ").toString();
+
 		try (Connection connection = getConnection();
-				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-			
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(query);) {
+
+			preparedStatement.setInt(1, f.getFlightID());
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
-					resultSet.next();
-					//flight = new FlightBean();
-					f.setFlightID(resultSet.getInt(1));
-					f.setSourceCity(resultSet.getString(2));
-					f.setDestinationCity(resultSet.getString(3));
-					f.setArrivalTime(resultSet.getTime(4));
-					f.setArrivalDate(resultSet.getDate(5));
-					f.setDepartureTime(resultSet.getTime(6));
-					f.setDepartureDate(resultSet.getDate(7));
-					
-					resultSet.close();
+				resultSet.next();
+				f.setFlightID(resultSet.getInt(1));
+				f.setSourceCity(resultSet.getString(2));
+				f.setDestinationCity(resultSet.getString(3));
+				f.setArrivalTime(resultSet.getTime(4));
+				f.setArrivalDate(resultSet.getDate(5));
+				f.setDepartureTime(resultSet.getTime(6));
+				f.setDepartureDate(resultSet.getDate(7));
+
+				resultSet.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new FlightNotFoundException();
+				if (connection != null) {
+					try {
+						System.err
+								.print("Get flight detail could not be performed");
+						connection.close();
+					} catch (SQLException excep) {
+						System.err.print("SQL error occurs : "
+								+ excep.getMessage());
+					}
+				}
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new FlightNotFoundException();
 		}
 		return f;
 	}
-	
+
 	@SuppressWarnings("serial")
-	public class FlightInsertException extends Throwable{
+	public class FlightInsertException extends Throwable {
 	}
-	
+
 	@SuppressWarnings("serial")
-	public class FlightNotFoundException extends Throwable{
+	public class FlightNotFoundException extends Throwable {
 	}
 }
-
