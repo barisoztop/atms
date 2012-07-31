@@ -9,7 +9,10 @@ import de.tum.in.dbpra.model.bean.*;
 
 public class ContactDAO extends AbstractDAO {
 
-	public void createNewContact(ContactBean c) throws ContactInsertException {
+	public Connection connection;
+
+	public void createNewContact(ContactBean c) throws ContactInsertException,
+			SQLException {
 
 		try {
 			// IF it already exists, we don't have to create a new one
@@ -24,10 +27,12 @@ public class ContactDAO extends AbstractDAO {
 			// mock-up data
 			c.setAmount(0.0);
 
-			try (Connection connection = getConnection();
+			connection = getConnection();
 
-					PreparedStatement preparedStatement = connection
-							.prepareStatement(query);) {
+			try (PreparedStatement preparedStatement = connection
+					.prepareStatement(query);) {
+
+				connection.setAutoCommit(false);
 
 				preparedStatement.setInt(1, c.getCustomerID());
 				preparedStatement.setInt(2, c.getAgentID());
@@ -52,7 +57,7 @@ public class ContactDAO extends AbstractDAO {
 		String query = new StringBuilder()
 				.append("SELECT CUSTOMERID,AGENTID,CURRENCY,STATUS,MODEOFPAYMENT,AMOUNT ")
 				.append("FROM CONTACTS c ")
-				.append("WHERE CUSTOMERID = ? AND AGENTID = ?").toString();
+				.append("WHERE CUSTOMERID = ? AND AGENTID = ? ").toString();
 
 		ContactBean myContact;
 
@@ -76,12 +81,12 @@ public class ContactDAO extends AbstractDAO {
 
 				resultSet.close();
 			} catch (SQLException e) {
-				//e.printStackTrace();
+				// e.printStackTrace();
 				throw new ContactNotFoundException();
 			}
 
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			throw new ContactNotFoundException();
 		}
 		return myContact;
