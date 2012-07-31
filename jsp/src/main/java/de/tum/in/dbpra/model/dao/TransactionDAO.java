@@ -6,43 +6,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-
 import de.tum.in.dbpra.model.bean.*;
 
+public class TransactionDAO extends AbstractDAO {
 
-public class TransactionDAO extends AbstractDAO{
-	
-	//AGENTID , FLIGHTID and T_TIMESTAMP need to be known prior??
-	public void createNewTransaction(TransactionBean t) throws TransactionInsertException{
-		
+	public Connection connection;
+
+	public void createNewTransaction(TransactionBean t)
+			throws TransactionInsertException, SQLException {
+
 		String query = new StringBuilder()
-		.append("INSERT INTO TRANSACTIONS(AGENTID,FLIGHTID,T_TIMESTAMP,CURRENCY,T_STATUS,MODEOFPAYMENT,AMOUNT,TYPEOFTRANSACTION,CUSTOMERID )")
-		.append("VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)")
-		.toString();
-		
-		//set current time
+				.append("INSERT INTO TRANSACTIONS(AGENTID,FLIGHTID,T_TIMESTAMP,CURRENCY,T_STATUS,MODEOFPAYMENT,AMOUNT,TYPEOFTRANSACTION,CUSTOMERID )")
+				.append("VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)").toString();
+
+		// set current time
 		java.util.Date today = new java.util.Date();
-	    Timestamp timeStamp = new java.sql.Timestamp(today.getTime());
-		
-	    //mock-up data
-	    t.setAmount(0.0);
-	    
-	    System.out.println("d--d--d-");
-	    System.out.println(t.getAgentID());
-	    System.out.println(t.getFlightID());
-	    System.out.println(timeStamp.toString());
-	    System.out.println(t.getCurrency());
-	    System.out.println(t.gett_status());
-	    System.out.println(t.getModeOfPayment());
-	    System.out.println(t.getAmount());
-	    System.out.println(t.getTypeOfTransaction());
-	    System.out.println(t.getCustomerID());
-	    System.out.println("-----");
-	    
-		try (Connection connection = getConnection();
-			
-			PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-			
+		Timestamp timeStamp = new java.sql.Timestamp(today.getTime());
+
+		// mock-up data
+		t.setAmount(0.0);
+
+		connection = getConnection();
+		try (PreparedStatement preparedStatement = connection
+				.prepareStatement(query);) {
+			connection.setAutoCommit(false);
+
 			preparedStatement.setInt(1, t.getAgentID());
 			preparedStatement.setInt(2, t.getFlightID());
 			preparedStatement.setTimestamp(3, timeStamp);
@@ -52,39 +40,35 @@ public class TransactionDAO extends AbstractDAO{
 			preparedStatement.setDouble(7, t.getAmount());
 			preparedStatement.setString(8, t.getTypeOfTransaction());
 			preparedStatement.setInt(9, t.getCustomerID());
-			
+
 			preparedStatement.executeUpdate();
-			
+
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new TransactionInsertException();
 		}
 	}
-	
-	
-	
-	
-	//findTransaction by using AGENTID and FLIGHTID
-	public TransactionBean findTransaction(TransactionBean t) 
-			throws TransactionNotFoundException{
-		
+
+	// findTransaction by using AGENTID and FLIGHTID
+	public TransactionBean findTransaction(TransactionBean t)
+			throws TransactionNotFoundException {
+
 		String query = new StringBuilder()
-		.append("SELECT AGENTID,FLIGHTID,T_TIMESTAMP,CURRENCY,T_STATUS,MODEOFPAYMENT,AMOUNT,TYPEOFTRANSACTION,CUSTOMERID ")
-		.append("FROM TRANSACTIONS t ")
-		.append("WHERE AGENTID = ? AND FLIGHTID = ?")
-		.toString();
-		
+				.append("SELECT AGENTID,FLIGHTID,T_TIMESTAMP,CURRENCY,T_STATUS,MODEOFPAYMENT,AMOUNT,TYPEOFTRANSACTION,CUSTOMERID ")
+				.append("FROM TRANSACTIONS t ")
+				.append("WHERE AGENTID = ? AND FLIGHTID = ?").toString();
+
 		TransactionBean myTransaction;
-		
+
 		try (Connection connection = getConnection();
-				 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-			
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(query);) {
+
 			preparedStatement.setInt(1, t.getAgentID());
 			preparedStatement.setInt(2, t.getFlightID());
-			
+
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
 				resultSet.next();
-	
+
 				myTransaction = new TransactionBean();
 				myTransaction.setAgentID(resultSet.getInt(1));
 				myTransaction.setFlightID(resultSet.getInt(2));
@@ -95,25 +79,25 @@ public class TransactionDAO extends AbstractDAO{
 				myTransaction.setAmount(resultSet.getDouble(7));
 				myTransaction.setTypeOfTransaction(resultSet.getString(8));
 				myTransaction.setCustomerID(resultSet.getInt(9));
-				
+
 				resultSet.close();
 			} catch (SQLException e) {
-				//e.printStackTrace();
+				// e.printStackTrace();
 				throw new TransactionNotFoundException();
 			}
-			
+
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			throw new TransactionNotFoundException();
 		}
 		return myTransaction;
 	}
-	
+
 	@SuppressWarnings("serial")
-	public class TransactionInsertException extends Throwable{
+	public class TransactionInsertException extends Throwable {
 	}
-	
+
 	@SuppressWarnings("serial")
-	public class TransactionNotFoundException extends Throwable{
+	public class TransactionNotFoundException extends Throwable {
 	}
 }
