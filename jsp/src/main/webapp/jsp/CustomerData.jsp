@@ -1,9 +1,9 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="de.tum.in.dbpra.model.bean.AirportBean"%>
-<%@page import="java.util.ArrayList"%>
+<!DOCTYPE html>
 <html>
 <head>
+<%@page import="de.tum.in.dbpra.model.bean.AirportBean"%>
+<%@page import="java.util.ArrayList"%>
+
 <link type="text/css" rel="stylesheet" href="/css/main.css" />
 <link type="text/css" rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.22.custom.css" />
 <script type="text/javascript" src="/jS/jquery-1.7.2.min.js"></script>
@@ -41,16 +41,16 @@
 						<table class="form_details">
 							<tr>
 								<td>Last Name: </td>
-								<td><input type="text" name=lname></td>
+								<td><input type="text" name=lname required="required" ></td>
 							</tr>
 							<tr>
 								<td>First Name: </td>
-								<td><input type="text" name=fname></td>
+								<td><input type="text" name=fname required="required" ></td>
 							</tr>
 							<tr>
 								<td>Dob</td>
 									<td><input type="text" class="datepicker"
-										name="dob"></td>
+										name="dob" required="required" ></td>
 							</tr>
 							<tr>
 								<td>Sex</td>
