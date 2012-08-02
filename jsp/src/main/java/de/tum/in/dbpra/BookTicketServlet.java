@@ -35,13 +35,12 @@ public class BookTicketServlet extends HttpServlet {
 
 		try {
 
-			// add new customer
 			String fName = request.getParameter("fname");
 			String lName = request.getParameter("lname");
 			String passportNO = request.getParameter("passportno");
 			Date dob = Date.valueOf(request.getParameter("dob"));
 			String sex = request.getParameter("sex");
-			// get the customerID
+
 			CustomerBean c = new CustomerBean();
 			c.setFName(fName);
 			c.setLName(lName);
@@ -50,54 +49,39 @@ public class BookTicketServlet extends HttpServlet {
 			c.setSex(sex);
 			CustomerDAO custDAO = new CustomerDAO();
 
-			// create new customer and get the customer id
 			int customerID = custDAO.createNewCustomer(c);
 			System.out.println("customerID = " + customerID);
-			// agentID
-			int agentID = 1;
 
-			// create FlightDAO
+			int agentID = 1; // set default agent, assuming only one agent can
+								// perform transactions on behalf of customer
+
 			FlightDAO fDAO = new FlightDAO();
 			FlightBean flightBean = new FlightBean();
 			flightBean.setFlightID(Integer.parseInt((String) request
 					.getSession().getAttribute("flightid")));
 			fDAO.getFlightDetail(flightBean);
-			System.out.println("FLIGHTDAO is Successful");
 
 			TransactionBean transaction = new TransactionBean();
-			// set transactionBean by using input from jsp
-			// AGENTID,FLIGHTID,T_TIMESTAMP,CURRENCY,T_STATUS,MODEOFPAYMENT,AMOUNT,TYPEOFTRANSACTION
 			transaction.setAgentID(agentID);
 			transaction.setFlightID(flightBean.getFlightID());
 			transaction.setCurrency(request.getParameter("currency"));
 			transaction.sett_status(request.getParameter("t_status"));
 			transaction.setModeOfPayment(request.getParameter("modeofpayment"));
-			// transaction.setAmount(Double.parseDouble(request.getParameter("amount")));
 			transaction.setTypeOfTransaction(request
 					.getParameter("typeoftransaction"));
 			transaction.setCustomerID(customerID);
 			trDAO.createNewTransaction(transaction);
-			System.out.println("TRDAO is Successful");
 
 			ContactBean contact = new ContactBean();
-			// set ContactBean by using input from jsp
-			// CUSTOMERID,AGENTID,CURRENCY,STATUS,MODEOFPAYMENT,AMOUNT
 			contact.setCustomerID(customerID);
 			contact.setAgentID(agentID);
 			contact.setCurrency(request.getParameter("currency"));
 			contact.setStatus(request.getParameter("status"));
 			contact.setModeOfPayment(request.getParameter("modeofpayment"));
-			// contact.setAmount(Double.parseDouble(request.getParameter("amount")));
 			cDAO.createNewContact(contact);
-			System.out.println("CDAO is Successful");
 
 			TicketBean ticket = new TicketBean();
-			// set TicketBean by using input from jsp
-			// TICKETID,FLIGHTID,TOTALFARE,NOOFCHILDREN,DEPARTURETIME,DEPARTUREDATE,DEPARTUREAIRPORTCODE,CURRENCY,ARRIVALAIRPORTCODE,ARRIVALTIME,ARRIVALDATE,CUSTOMERID
 			ticket.setFlightID(flightBean.getFlightID());
-			// assume totalFare = amount
-			// ticket.setTotalFare(Double.parseDouble(request.getParameter("amount")));
-			// ticket.setNoOfChildren(Integer.parseInt(request.getParameter("noofchildren")));
 			ticket.setCurrency(request.getParameter("currency"));
 			ticket.setCustomerID(customerID);
 			ticket.setArrivalAirportCode(flightBean.getDestinationCity());
@@ -108,37 +92,32 @@ public class BookTicketServlet extends HttpServlet {
 			ticket.setDepartureTime(flightBean.getDepartureTime());
 			tkDAO.createNewTicket(ticket);
 
-			System.out.println("Transaction is Successful");
-
-			tkDAO.connection.commit();
-			cDAO.connection.commit();
 			trDAO.connection.commit();
+			cDAO.connection.commit();
+			tkDAO.connection.commit();
 
-			tkDAO.connection.close();
-			cDAO.connection.close();
 			trDAO.connection.close();
+			cDAO.connection.close();
+			tkDAO.connection.close();
+
 		} catch (Throwable e) {
 			request.setAttribute("error", true);
-			// roll back all three transactions here
 			try {
+				trDAO.connection.rollback();
+				cDAO.connection.rollback();
 				tkDAO.connection.rollback();
 
-				cDAO.connection.rollback();
-				trDAO.connection.rollback();
-
-				tkDAO.connection.close();
-				cDAO.connection.close();
 				trDAO.connection.close();
+				cDAO.connection.close();
+				tkDAO.connection.close();
 
 				System.out.println("Rollback!!");
 			} catch (Exception e1) {
-				System.out.println("Rollback FAILED");
+				System.out.println("Rollback!!");
 			}
 			e.printStackTrace();
 			System.out.println("Transaction FAIL");
 		}
-
-		// commit all three transactions here if there is no error
 
 		RequestDispatcher dispatcher = request
 				.getRequestDispatcher("/jsp/bookResult.jsp");

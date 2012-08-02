@@ -21,7 +21,7 @@
 		<div id="content-container1">
 			<jsp:include page="/public/LeftContent.jsp"></jsp:include>
 			<div id="content">
-				<h2>The flight has been booked.</h2>
+				<h2><%=request.getParameter("successMessage") %></h2>
 			</div>
 		</div>
 		<jsp:include page="/public/BottomContent.jsp"></jsp:include>

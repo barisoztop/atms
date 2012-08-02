@@ -36,7 +36,7 @@ public class CustomerBean {
 	public void setLName(String lName) {
 		this.lName = lName;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
@@ -44,7 +44,7 @@ public class CustomerBean {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
 	public String getCountry() {
 		return country;
 	}
@@ -52,14 +52,14 @@ public class CustomerBean {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
+
 	public String getPassportNO() {
 		return passportNO;
 	}
 
 	public void setPassportNO(String passportNO) {
 		this.passportNO = passportNO;
-	}	
+	}
 
 	public Date getDOB() {
 		return DOB;
@@ -68,12 +68,12 @@ public class CustomerBean {
 	public void setDOB(Date DOB) {
 		this.DOB = DOB;
 	}
-	
+
 	public String getSex() {
 		return sex;
 	}
 
 	public void setSex(String sex) {
 		this.sex = sex;
-	}	
+	}
 }

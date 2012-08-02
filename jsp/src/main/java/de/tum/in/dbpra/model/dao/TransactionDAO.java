@@ -19,12 +19,10 @@ public class TransactionDAO extends AbstractDAO {
 				.append("INSERT INTO TRANSACTIONS(AGENTID,FLIGHTID,T_TIMESTAMP,CURRENCY,T_STATUS,MODEOFPAYMENT,AMOUNT,TYPEOFTRANSACTION,CUSTOMERID )")
 				.append("VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)").toString();
 
-		// set current time
 		java.util.Date today = new java.util.Date();
 		Timestamp timeStamp = new java.sql.Timestamp(today.getTime());
 
-		// mock-up data
-		t.setAmount(0.0);
+		t.setAmount(0.0); // mock-up data
 
 		connection = getConnection();
 		try (PreparedStatement preparedStatement = connection
@@ -48,7 +46,6 @@ public class TransactionDAO extends AbstractDAO {
 		}
 	}
 
-	// findTransaction by using AGENTID and FLIGHTID
 	public TransactionBean findTransaction(TransactionBean t)
 			throws TransactionNotFoundException {
 
@@ -82,12 +79,10 @@ public class TransactionDAO extends AbstractDAO {
 
 				resultSet.close();
 			} catch (SQLException e) {
-				// e.printStackTrace();
 				throw new TransactionNotFoundException();
 			}
 
 		} catch (SQLException e) {
-			// e.printStackTrace();
 			throw new TransactionNotFoundException();
 		}
 		return myTransaction;

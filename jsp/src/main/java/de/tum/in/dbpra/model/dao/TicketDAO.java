@@ -18,8 +18,7 @@ public class TicketDAO extends AbstractDAO {
 				.append("VALUES(case when (SELECT MAX(TICKETID) FROM TICKET)+1 is null then 1 else (SELECT MAX(TICKETID) FROM TICKET)+1 end, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 				.toString();
 
-		// mock-up data
-		t.setTotalFare(0.0);
+		t.setTotalFare(0.0); // mock-up data
 
 		connection = getConnection();
 
