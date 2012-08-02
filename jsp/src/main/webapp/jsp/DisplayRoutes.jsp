@@ -19,7 +19,8 @@
 
 
 <link type="text/css" rel="stylesheet" href="/css/main.css" />
-<link type="text/css" rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.22.custom.css" />
+<link type="text/css" rel="stylesheet"
+	href="/css/ui-lightness/jquery-ui-1.8.22.custom.css" />
 <script type="text/javascript" src="/jS/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/jS/jquery-ui-1.8.22.custom.min.js"></script>
 

@@ -15,17 +15,16 @@ public class ContactDAO extends AbstractDAO {
 			SQLException {
 
 		try {
-			// IF it already exists, we don't have to create a new one
+
 			findContact(c);
-			System.out.println("Use existing contact");
+
 		} catch (ContactNotFoundException ce) {
 
 			String query = new StringBuilder()
 					.append("INSERT INTO CONTACTS(CUSTOMERID,AGENTID,CURRENCY,STATUS,MODEOFPAYMENT,AMOUNT)")
 					.append("VALUES(?, ?, ?, ?, ?, ?)").toString();
 
-			// mock-up data
-			c.setAmount(0.0);
+			c.setAmount(0.0); // mock-up data
 
 			connection = getConnection();
 
@@ -81,12 +80,10 @@ public class ContactDAO extends AbstractDAO {
 
 				resultSet.close();
 			} catch (SQLException e) {
-				// e.printStackTrace();
 				throw new ContactNotFoundException();
 			}
 
 		} catch (SQLException e) {
-			// e.printStackTrace();
 			throw new ContactNotFoundException();
 		}
 		return myContact;

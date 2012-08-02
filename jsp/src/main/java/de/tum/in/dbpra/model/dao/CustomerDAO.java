@@ -11,7 +11,6 @@ public class CustomerDAO extends AbstractDAO {
 	public int createNewCustomer(CustomerBean c) throws CustomerInsertException {
 
 		try {
-			// IF it already exists, we don't have to create a new one
 			return findCustomer(c);
 
 		} catch (CustomerNotFoundException ce) {
@@ -21,18 +20,11 @@ public class CustomerDAO extends AbstractDAO {
 					.append("VALUES(case when (SELECT MAX(CUSTOMERID) FROM CUSTOMER)+1 is null then 1 else (SELECT MAX(CUSTOMERID) FROM CUSTOMER)+1 end, ?, ?, ?, ?, ?, ?, ?)")
 					.toString();
 
-			// System.out.println("CustomerDAO query : "+query);
-
-			// c.setAddress("test");
-			// c.setCountry("test");
-			// c.setPassportNO("test");
-
 			try (Connection connection = getConnection();
 
 					PreparedStatement preparedStatement = connection
 							.prepareStatement(query);) {
 
-				// preparedStatement.setInt(1, c.getCustomerID());
 				preparedStatement.setString(1, c.getFName());
 				preparedStatement.setString(2, c.getLName());
 				preparedStatement.setString(3, c.getAddress());
@@ -55,14 +47,11 @@ public class CustomerDAO extends AbstractDAO {
 					.append("WHERE FNAME = ? AND LNAME = ? AND DOB = ? ")
 					.toString();
 
-			// System.out.println("CustomerDAO query 2 : "+query2);
-
 			try (Connection connection = getConnection();
 
 					PreparedStatement preparedStatement2 = connection
 							.prepareStatement(query2);) {
 
-				// preparedStatement.setInt(1, c.getCustomerID());
 				preparedStatement2.setString(1, c.getFName());
 				preparedStatement2.setString(2, c.getLName());
 				preparedStatement2.setDate(3, c.getDOB());
@@ -86,16 +75,13 @@ public class CustomerDAO extends AbstractDAO {
 		}
 	}
 
-	// require CustomerBean with FName and LName
 	public int findCustomer(CustomerBean c) throws CustomerNotFoundException {
 
-		String query = new StringBuilder()
-				.append("SELECT CUSTOMERID ")
+		String query = new StringBuilder().append("SELECT CUSTOMERID ")
 				.append("FROM CUSTOMER ")
 				.append("WHERE FNAME = ? AND LNAME = ? AND DOB = ? ")
 				.toString();
 
-		// List<CustomerBean> myCustomers = new LinkedList<CustomerBean>();
 		int myCustomerID;
 
 		try (Connection connection = getConnection();
@@ -109,19 +95,15 @@ public class CustomerDAO extends AbstractDAO {
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
 				if (resultSet.next()) {
 					myCustomerID = resultSet.getInt(1);
-					System.out.println("BARIS: customer id line D: " + myCustomerID);
 				} else {
-					System.out.println("BARIS: customer id cannot be found line A");
 					throw new CustomerNotFoundException();
 				}
 				resultSet.close();
 			} catch (SQLException e) {
-				System.out.println("BARIS: customer id cannot be found line B");
 				throw new CustomerNotFoundException();
 			}
 
 		} catch (SQLException e) {
-			System.out.println("BARIS: customer id cannot be found line C");
 			throw new CustomerNotFoundException();
 		}
 		return myCustomerID;

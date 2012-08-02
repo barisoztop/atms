@@ -12,56 +12,69 @@ public class FlightSegmentBean {
 	private Time departureTime;
 	private String sourceCity;
 	private String destinationCity;
-	
+
 	public String getSourceCity() {
 		return sourceCity;
 	}
+
 	public void setSourceCity(String sourceCity) {
 		this.sourceCity = sourceCity;
 	}
-	
+
 	public String getDestinationCity() {
 		return destinationCity;
 	}
+
 	public void setDestinationCity(String destinationCity) {
 		this.destinationCity = destinationCity;
 	}
-	
+
 	public int getFlightNr() {
 		return filghtNr;
 	}
+
 	public void setFlightNr(int filghtNr) {
 		this.filghtNr = filghtNr;
 	}
+
 	public int getRouteId() {
 		return routeID;
 	}
+
 	public void setRouteId(int routeId) {
 		this.routeID = routeId;
 	}
+
 	public Date getArrivalDate() {
 		return arrivalDate;
 	}
+
 	public void setArrivalDate(Date arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
+
 	public Date getDepartureDate() {
 		return departureDate;
 	}
+
 	public void setDepartureDate(Date departureDate) {
 		this.departureDate = departureDate;
 	}
+
 	public Time getArrivalTime() {
 		return arrivalTime;
 	}
+
 	public void setArrivalTime(Time arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
+
 	public Time getDepartureTime() {
 		return departureTime;
 	}
+
 	public void setDepartureTime(Time departureTime) {
 		this.departureTime = departureTime;
 	}
-	
+
 }

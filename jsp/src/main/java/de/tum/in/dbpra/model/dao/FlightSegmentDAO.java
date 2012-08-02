@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.tum.in.dbpra.model.bean.FlightSegmentBean;
-import de.tum.in.dbpra.model.dao.RouteDAO.RoutePair;
+import de.tum.in.dbpra.model.bean.RoutePair;
 
 public class FlightSegmentDAO extends AbstractDAO {
 
@@ -104,8 +104,8 @@ public class FlightSegmentDAO extends AbstractDAO {
 
 	/**
 	 * Finds the segments(if they exist) that corresponds to the route pairs.
-	 * Right now only handles one route pair for each flight. So it only find the segments 
-	 * for the flights possible with two segments.
+	 * Right now only handles one route pair for each flight. So it only find
+	 * the segments for the flights possible with two segments.
 	 * 
 	 * @param routePairs
 	 *            the pairs containing the routes

@@ -9,102 +9,89 @@ import java.util.ArrayList;
 import java.util.List;
 import de.tum.in.dbpra.model.bean.AirportBean;
 
+public class AirportDAO extends AbstractDAO {
 
-public class AirportDAO extends AbstractDAO{
-	
-	
-	public ArrayList<AirportBean> getAirportList() throws AirportNotFoundException {
-		
+	public ArrayList<AirportBean> getAirportList()
+			throws AirportNotFoundException {
+
 		Connection connection = null;
 		Statement stmt = null;
-		
+
 		AirportBean airport;
 		ArrayList<AirportBean> list = new ArrayList<AirportBean>();
-		
-		String query = new StringBuilder()
-	        .append("SELECT APCODE, APNAME")
-			.append("  FROM airport ")
-			.toString();
-		
 
-		try{
+		String query = new StringBuilder().append("SELECT APCODE, APNAME")
+				.append("  FROM airport ").toString();
+
+		try {
 			connection = getConnection();
 			connection.setAutoCommit(false);
 			stmt = connection.createStatement();
 			ResultSet resultSet = stmt.executeQuery(query);
 
-				while (resultSet.next()) {
-			     		
-				 airport = new AirportBean();
-				 airport.setApcode(resultSet.getString(1));
-				 airport.setApname(resultSet.getString(2));
-				 list.add(airport);
-			}
+			while (resultSet.next()) {
 
-				resultSet.close();
-				connection.commit();
-		}catch(SQLException e ){
+				airport = new AirportBean();
+				airport.setApcode(resultSet.getString(1));
+				airport.setApname(resultSet.getString(2));
+				list.add(airport);
+
+			}
+			connection.commit();
+
+		} catch (SQLException e) {
 			if (connection != null) {
-	            try {
-	                System.err.print("Transaction is being rolled back");
-	                connection.rollback();
-	            } catch(SQLException excep) {
-	            	System.err.print("SQL error occurs : "+excep.getMessage());
-	            }
+				try {
+					System.err.print("Transaction is being rolled back");
+					connection.rollback();
+				} catch (SQLException excep) {
+					System.err
+							.print("SQL error occurs : " + excep.getMessage());
+				}
 
 			}
 		} finally {
-			if(stmt != null){
+			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					System.err.print("SQL error occurs : "+e.getMessage());
+					System.err.print("SQL error occurs : " + e.getMessage());
 					e.printStackTrace();
 				}
 
 			}
 		}
 
+		return list;
 
- return list;
+	}
 
-}	
-	
-
-	
-	// Useless methods - need to remove
-	
-	
-	
-		public List<String> getAirportNames() {
+	public List<String> getAirportNames() {
 
 		List<String> airportNames = new ArrayList<String>();
-		
-		String query = new StringBuilder()
-		.append("SELECT apname ")
-		.append("FROM airport ")
-		.toString();
+
+		String query = new StringBuilder().append("SELECT apname ")
+				.append("FROM airport ").toString();
 
 		try (Connection connection = getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(query);) {
 
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
 
 				if (resultSet.next()) {
 					airportNames.add(resultSet.getString(1));
-				} 
+				}
 
-			} 
-			catch (SQLException e) {
+			} catch (SQLException e) {
 
 				e.printStackTrace();
 			}
-		} 
-		catch (SQLException e) {
+		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		
+
 		return airportNames;
 
 	}
@@ -113,14 +100,12 @@ public class AirportDAO extends AbstractDAO{
 
 		String apcode = null;
 
-		String query = new StringBuilder()
-		.append("SELECT apcode ")
-		.append("FROM airport ")
-		.append("WHERE apname = ?")
-		.toString();
+		String query = new StringBuilder().append("SELECT apcode ")
+				.append("FROM airport ").append("WHERE apname = ?").toString();
 
 		try (Connection connection = getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(query);) {
 
 			preparedStatement.setString(1, airportName);
 
@@ -128,26 +113,21 @@ public class AirportDAO extends AbstractDAO{
 
 				if (resultSet.next()) {
 					apcode = resultSet.getString(1);
-				} 
+				}
 
-			} 
-			catch (SQLException e) {
+			} catch (SQLException e) {
 
 				e.printStackTrace();
 			}
-		} 
-		catch (SQLException e) {
+		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
 		return apcode;
 	}
 
-	
-@SuppressWarnings("serial")
-public static class AirportNotFoundException extends Throwable {
-   }
-
+	@SuppressWarnings("serial")
+	public static class AirportNotFoundException extends Throwable {
+	}
 
 }
-
